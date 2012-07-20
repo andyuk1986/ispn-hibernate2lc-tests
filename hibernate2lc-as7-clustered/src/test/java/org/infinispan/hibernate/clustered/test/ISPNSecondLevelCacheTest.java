@@ -215,6 +215,72 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
         emf.close();
     }
 
+    @Test
+    @InSequence(5)
+    @OperateOnDeployment("node1")
+    public void testDataUpdateNode1() throws Exception {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+        EntityManager manager = emf.createEntityManager();
+
+        EmbeddedCacheManager cacheManager = getCacheManager(emf);
+
+        DBEntry entry = manager.find(DBEntry.class, rowCountInDb);
+
+        Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
+        expectedElems.put(rowCountInDb, entry);
+
+        Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
+        assertCacheManagerStatistics(cacheElems, 2, expectedElems);
+
+        entry.setName("testulik");
+        entry = manager.merge(entry);
+        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
+        assertCacheManagerStatistics(cacheElems, 2, expectedElems);
+
+        //Rolling back all actions
+        entry.setName(lastRowName);
+        entry = manager.merge(entry);
+
+        manager.close();
+        emf.close();
+    }
+
+    @Test
+    @InSequence(6)
+    @OperateOnDeployment("node2")
+    public void testDataUpdateNode2() throws Exception {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+        EntityManager manager = emf.createEntityManager();
+
+        InitialContext ctx = new InitialContext();
+        SessionFactory factory = (SessionFactory) ctx.lookup("SessionFactories/testSF");
+        Statistics stat = factory.getStatistics();
+        SecondLevelCacheStatistics statistics = stat.getSecondLevelCacheStatistics("local-entity");
+        SecondLevelCacheStatistics statisticsCol = stat.getSecondLevelCacheStatistics("local-collection");
+
+        EmbeddedCacheManager cacheManager = getCacheManager(emf);
+
+        DBEntry entry = manager.find(DBEntry.class, rowCountInDb);
+
+        Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
+        expectedElems.put(rowCountInDb, entry);
+
+        Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
+        assertCacheManagerStatistics(cacheElems, 2, expectedElems);
+
+        entry.setName("testulik");
+        entry = manager.merge(entry);
+        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
+        assertCacheManagerStatistics(cacheElems, 2, expectedElems);
+
+        //Rolling back all actions
+        entry.setName(lastRowName);
+        entry = manager.merge(entry);
+
+        manager.close();
+        emf.close();
+    }
+
     /*@Test
     @InSequence(3)
     @OperateOnDeployment("node1")
