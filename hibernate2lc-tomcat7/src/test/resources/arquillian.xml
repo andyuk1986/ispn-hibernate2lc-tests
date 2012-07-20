@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<arquillian xmlns="http://www.jboss.org/arquillian-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://www.jboss.org/arquillian-1.0 http://jboss.org/schema/arquillian/arquillian-1.0.xsd">
+
+
+    <container qualifier="tomcat" default="true">
+        <configuration>
+            <property name="unpackArchive">true</property>
+            <property name="workDir">target/tomcat7-embedded</property>
+            <!--<property name="catalinaHome">/usr/share/apache-tomcat-7.0.27</property>
+            <property name="javaHome">/usr/java/jdk1.7.0_04/</property>
+            <property name="userName">admin</property>
+            <property name="password">pass</property>
+            <property name="jmxPort">8099</property>-->
+        </configuration>
+    </container>
+
+</arquillian>

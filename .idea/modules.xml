@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/hibernate2lc-as7-clustered/hibernate2lc-as7-clustered.iml" filepath="$PROJECT_DIR$/hibernate2lc-as7-clustered/hibernate2lc-as7-clustered.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hibernate2lc-tomcat7/hibernate2lc-tomcat7.iml" filepath="$PROJECT_DIR$/hibernate2lc-tomcat7/hibernate2lc-tomcat7.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/hibernate2lc-tomcat7-clustered.iml" filepath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/hibernate2lc-tomcat7-clustered.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hibernate2lc-as7-nonclustered/infinispan-hibernate2lc-tests.iml" filepath="$PROJECT_DIR$/hibernate2lc-as7-nonclustered/infinispan-hibernate2lc-tests.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ispn-hibernate2lc-tests.iml" filepath="$PROJECT_DIR$/ispn-hibernate2lc-tests.iml" />
+    </modules>
+  </component>
+</project>
+

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources xmlns="http://www.jboss.org/ironjacamar/schema"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="
+        http://www.jboss.org/ironjacamar/schema
+        http://docs.jboss.org/ironjacamar/schema/datasources_1_0.xsd">
+    <datasource enabled="true" use-java-context="true"
+                jndi-name="java:jboss/datasources/testDb"
+                pool-name="TestPool">
+        <connection-url>jdbc:mysql://localhost:3306/testDb</connection-url>
+        <driver>mysql</driver>
+        <security>
+            <user-name>root</user-name>
+        </security>
+    </datasource>
+</datasources>
