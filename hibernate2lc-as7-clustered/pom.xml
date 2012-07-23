@@ -145,6 +145,32 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>make-a-jar</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                        <configuration>
+                            <jarName>test</jarName>
+                            <excludes>
+                                <exclude>**/test/*.class</exclude>
+                                <exclude>**/transactional/**/*</exclude>
+                                <exclude>**/arquillian.*</exclude>
+                                <exclude>**/MANIFEST.MF</exclude>
+                                <exclude>**/queries/*</exclude>
+                            </excludes>
+                            <outputDirectory>
+                                ${project.basedir}/target/test-libs/
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>

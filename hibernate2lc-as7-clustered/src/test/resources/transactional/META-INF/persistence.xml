@@ -17,7 +17,6 @@
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.cache.infinispan.statistics" value="true" />
             <property name="hibernate.generate_statistics" value="true"/>
-            <property name="hibernate.session_factory_name" value="SessionFactories/testSF"/>
 
             <property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.infinispan.InfinispanRegionFactory" />
             <property name="hibernate.cache.infinispan.cfg" value="infinispan-config.xml" />

@@ -42,16 +42,17 @@ public abstract class AbstractISPNSecondLevelCacheTest {
     protected static final String TRANSACTIONAL_INFINISPAN_CONFIG_NAME = "transactional/infinispan-config.xml";
 
     protected static final String QUERY_CACHE_NAME = "replicated-query";
-    protected static final String ENTITY_CACHE_NAME = "replicated-entity";
+    protected static final String ENTITY_CACHE_NAME = "testable.war#hib2Lc.replicated-entity";
 
     protected static final String TESTABLE_PACKAGE = "org.infinispan.hibernate.clustered.test";
 
     public static WebArchive createInfinispan2LCWebArchive(final String warName) {
         WebArchive war = ShrinkWrap.create(WebArchive.class, warName)
-                .addPackages(true, new String[]{TESTABLE_PACKAGE})
+                .addPackage(TESTABLE_PACKAGE)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsLibraries(
                         new File("target/test-libs/hibernate-core-4.1.3.Final.jar"),
+                        new File("target/test-libs/test-tests.jar"),
                         new File("target/test-libs/hibernate-commons-annotations-4.0.1.Final.jar"),
                         new File("target/test-libs/hibernate-jpa-2.0-api-1.0.1.Final.jar"),
                         new File("target/test-libs/hibernate-validator-4.2.0.Final.jar"),
@@ -61,12 +62,6 @@ public abstract class AbstractISPNSecondLevelCacheTest {
                         new File("target/test-libs/hibernate-infinispan-4.1.3.Final.jar"));//.addAsResource("META-INF/jbossas-ds.xml");
 
         return war;
-    }
-
-    protected void assertStatistics(final SecondLevelCacheStatistics statistics, final int putCount, final int missCount, final int hitCount) {
-        assertTrue("The hit count should be " + hitCount, statistics.getHitCount() == hitCount);
-        assertTrue("The put count should be " + putCount, statistics.getPutCount() == putCount);
-        assertTrue("The miss count should be " + missCount, statistics.getMissCount() == missCount);
     }
 
     protected EmbeddedCacheManager getCacheManager(final EntityManagerFactory emf) {

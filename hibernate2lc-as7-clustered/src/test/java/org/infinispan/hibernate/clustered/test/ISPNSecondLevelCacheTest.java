@@ -1,10 +1,7 @@
 package org.infinispan.hibernate.clustered.test;
 
-import org.hibernate.SessionFactory;
 import org.hibernate.cache.spi.CacheKey;
 import org.hibernate.cache.spi.entry.CacheEntry;
-import org.hibernate.stat.SecondLevelCacheStatistics;
-import org.hibernate.stat.Statistics;
 import org.infinispan.hibernate.clustered.test.data.DBEntry;
 import org.infinispan.hibernate.clustered.test.data.DBEntryCollection;
 import org.infinispan.manager.EmbeddedCacheManager;
@@ -13,35 +10,29 @@ import org.jboss.arquillian.container.test.api.OperateOnDeployment;
 import org.jboss.arquillian.container.test.api.TargetsContainer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.junit.InSequence;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 
 import javax.annotation.Resource;
-import javax.naming.InitialContext;
 import javax.persistence.*;
 import javax.transaction.UserTransaction;
+import java.io.Serializable;
 import java.util.*;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 
 /**
  * Tests for infinispan hibernate 2lc.
  */
 public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
     private String dbEntryName = "testname";
-    private String collectioName1 = "testCollection1";
-    private String collectioName2 = "testCollection2";
 
-    private int rowCountInDb = 999;
-    private String lastRowName = "test999";
-    private String lastColRowName = "testCol999";
-    private int newCreateElementId = 1000;
-
-    private static long firstExecutionDuration = 0;
-    private static long secondExecutionDuration = 0;
-
-    @Resource
-    UserTransaction tx;
+    private int rowCountInDb = 10000;
+    private String lastRowName = "test10000";
+    private String lastColRowName = "testCol10000";
+    private int newCreateElementId = 10001;
 
     @PersistenceContext
     EntityManager manager;
@@ -50,9 +41,11 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
     @TargetsContainer("container1")
     public static WebArchive createNode1Deployment() {
         WebArchive jar = createInfinispan2LCWebArchive(NODE1_WAR_NAME);
-        jar.addAsResource(PERSISTENCE_URL)
+        /*jar.addAsResource(PERSISTENCE_URL)
                 .addAsResource(INFINISPAN_CONFIG_NAME)
-                .addAsManifestResource(MANIFEST_FILE_NAME);
+                .addAsResource(JGROUPS_CONFIG_NAME)*/
+                jar.addAsManifestResource(MANIFEST_FILE_NAME)
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
 
         System.out.println(jar.toString(true));
 
@@ -62,11 +55,11 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
     @Deployment(name = "node2")
     @TargetsContainer("container2")
     public static WebArchive createNode2Deployment() {
-        WebArchive jar = createInfinispan2LCWebArchive(NODE2_WAR_NAME);
-        jar.addAsResource(PERSISTENCE_URL)
+        WebArchive jar = createInfinispan2LCWebArchive(NODE1_WAR_NAME);
+        /*jar.addAsResource(PERSISTENCE_URL)
                 .addAsResource(INFINISPAN_CONFIG_NAME)
-                .addAsResource(JGROUPS_CONFIG_NAME)
-                .addAsManifestResource(MANIFEST_FILE_NAME);
+                .addAsResource(JGROUPS_CONFIG_NAME)*/
+                jar.addAsManifestResource(MANIFEST_FILE_NAME);
 
         System.out.println(jar.toString(true));
 
@@ -77,8 +70,7 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
     @InSequence(1)
     @OperateOnDeployment("node1")
     public void testSecondLevelCacheForEntitiesAndCollectionsNode1() throws Exception {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-        EntityManager manager = emf.createEntityManager();
+        EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
 
         long startTime = System.currentTimeMillis();
         DBEntry entry = manager.find(DBEntry.class, rowCountInDb);
@@ -94,7 +86,6 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
             assertEquals("The entry collection name should be testCol " + rowCountInDb, lastColRowName, next.getName());
         }
 
-        EmbeddedCacheManager cacheManager = getCacheManager(emf);
         Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
         entry = new DBEntry(lastRowName, new Date());
         DBEntryCollection collection1 = new DBEntryCollection(lastColRowName, entry);
@@ -106,20 +97,15 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
 
         Map<CacheKey, CacheEntry> cachemap = cacheManager.getCache(ENTITY_CACHE_NAME);
         assertCacheManagerStatistics(cachemap, 2, expectedElems);
-
-        manager.close();
     }
 
     @Test
     @InSequence(2)
     @OperateOnDeployment("node2")
     public void testSecondLevelCacheForEntitiesAndCollectionsNode2() throws Exception {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-        EntityManager manager = emf.createEntityManager();
-
         long startTime = System.currentTimeMillis();
 
-        EmbeddedCacheManager cacheManager = getCacheManager(emf);
+        EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
         Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
         DBEntry entry = new DBEntry(lastRowName, new Date());
         DBEntryCollection collection = new DBEntryCollection(lastColRowName, entry);
@@ -133,7 +119,6 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
         assertCacheManagerStatistics(cachemap, 2, expectedElems);
 
         entry = manager.find(DBEntry.class, rowCountInDb);
-        long durationBeforeCache = System.currentTimeMillis() - startTime;
 
         assertNotNull(entry);
         assertEquals("The entry name should be test " + rowCountInDb, lastRowName, entry.getName());
@@ -144,85 +129,79 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
 
             assertEquals("The entry collection name should be testCol " + rowCountInDb, lastColRowName, next.getName());
         }
-
-        manager.close();
     }
 
     @Test
     @InSequence(3)
     @OperateOnDeployment("node1")
     public void testDataInsertionNode1() throws Exception {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-        EntityManager manager = emf.createEntityManager();
-
-        EmbeddedCacheManager cacheManager = getCacheManager(emf);
+        EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
         Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
+        //Clearing cache
+        cacheElems.clear();
+        //checking that the cache is empty
+        assertCacheManagerStatistics(cacheElems, 0, null);
 
-        assertCacheManagerStatistics(cacheElems, 2, null);
-        //Checking 2LC statistics
         DBEntry entry = new DBEntry(dbEntryName, new Date());
         manager.persist(entry);
 
         cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
-        Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
-        expectedElems.put(newCreateElementId, entry);
 
-        assertCacheManagerStatistics(cacheElems, 2, null);
+        Set cacheNames = cacheManager.getCacheNames();
+        for (Iterator iterator = cacheNames.iterator(); iterator.hasNext(); ) {
+            Object next = iterator.next();
+            System.out.println(next);
+        }
+        /*Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
+        entry = new DBEntry(lastRowName, new Date());
+        DBEntryCollection collection = new DBEntryCollection(lastColRowName, entry);
 
-       /* entry = (DBEntry) manager.find(DBEntry.class, newCreateElementId);
+        Set<DBEntryCollection> set = new HashSet<DBEntryCollection>();
+        set.add(collection);
+        entry.setCollection(set);
+        expectedElems.put(rowCountInDb, entry);*/
 
-        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
-        assertCacheManagerStatistics(cacheElems, 2, expectedElems);
+        assertCacheManagerStatistics(cacheElems, 1, null);
 
-        //Rolling back all changes
-        manager.remove(entry);
-
-        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
-        assertCacheManagerStatistics(cacheElems, 0, expectedElems);*/
-
-        manager.close();
-        emf.close();
+        //manager.close();
+        //emf.close();
     }
 
     @Test
     @InSequence(4)
     @OperateOnDeployment("node2")
     public void testDataInsertionNode2() throws Exception {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-        EntityManager manager = emf.createEntityManager();
-
-        EmbeddedCacheManager cacheManager = getCacheManager(emf);
+        EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
         Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
 
-        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
+        assertCacheManagerStatistics(cacheElems, 1, null);
+        DBEntry entry = manager.find(DBEntry.class, rowCountInDb);
+
         Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
+        expectedElems.put(rowCountInDb, entry);
 
-
-        assertCacheManagerStatistics(cacheElems, 2, expectedElems);
-
-        DBEntry entry = (DBEntry) manager.find(DBEntry.class, newCreateElementId);
-
+        System.out.println(entry);
         cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
-        assertCacheManagerStatistics(cacheElems, 2, expectedElems);
+        assertCacheManagerStatistics(cacheElems, 3, expectedElems);
+
+        System.out.println(manager.find(DBEntry.class, newCreateElementId));
 
         //Rolling back all changes
-        manager.remove(entry);
+        //manager.remove(entry);
 
-        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
-        assertCacheManagerStatistics(cacheElems, 2, null);
+        //cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
+        //assertCacheManagerStatistics(cacheElems, 2, expectedElems);
 
-        manager.close();
-        emf.close();
+        //manager.close();
+        //emf.close();
     }
 
+    /*
     @Test
     @InSequence(5)
     @OperateOnDeployment("node1")
     public void testDataUpdateNode1() throws Exception {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-        EntityManager manager = emf.createEntityManager();
-
-        EmbeddedCacheManager cacheManager = getCacheManager(emf);
+        EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
 
         DBEntry entry = manager.find(DBEntry.class, rowCountInDb);
 
@@ -233,53 +212,48 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
         assertCacheManagerStatistics(cacheElems, 2, expectedElems);
 
         entry.setName("testulik");
+        manager.setFlushMode(FlushModeType.COMMIT);
         entry = manager.merge(entry);
+
         cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
         assertCacheManagerStatistics(cacheElems, 2, expectedElems);
-
-        //Rolling back all actions
-        entry.setName(lastRowName);
-        entry = manager.merge(entry);
-
-        manager.close();
-        emf.close();
     }
 
     @Test
     @InSequence(6)
     @OperateOnDeployment("node2")
     public void testDataUpdateNode2() throws Exception {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-        EntityManager manager = emf.createEntityManager();
+        EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
 
-        InitialContext ctx = new InitialContext();
-        SessionFactory factory = (SessionFactory) ctx.lookup("SessionFactories/testSF");
-        Statistics stat = factory.getStatistics();
-        SecondLevelCacheStatistics statistics = stat.getSecondLevelCacheStatistics("local-entity");
-        SecondLevelCacheStatistics statisticsCol = stat.getSecondLevelCacheStatistics("local-collection");
+        DBEntry entry = new DBEntry("testulik", new Date());
+        DBEntryCollection col = new DBEntryCollection(lastColRowName, entry);
 
-        EmbeddedCacheManager cacheManager = getCacheManager(emf);
-
-        DBEntry entry = manager.find(DBEntry.class, rowCountInDb);
+        Set<DBEntryCollection> colSet = new HashSet<DBEntryCollection>();
+        colSet.add(col);
+        entry.setCollection(colSet);
 
         Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
         expectedElems.put(rowCountInDb, entry);
 
         Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
-        assertCacheManagerStatistics(cacheElems, 2, expectedElems);
-
-        entry.setName("testulik");
-        entry = manager.merge(entry);
-        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
-        assertCacheManagerStatistics(cacheElems, 2, expectedElems);
+       // assertCacheManagerStatistics(cacheElems, 2, expectedElems);
 
         //Rolling back all actions
-        entry.setName(lastRowName);
-        entry = manager.merge(entry);
+        entry = manager.find(DBEntry.class, rowCountInDb);
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        for (Iterator<CacheEntry> iterator = cacheElems.values().iterator(); iterator.hasNext(); ) {
+            CacheEntry next = iterator.next();
+            Serializable[] arr = next.getDisassembledState();
 
-        manager.close();
-        emf.close();
-    }
+            System.out.println(next.getDisassembledState()[1]);
+
+            if(arr.length > 2) {
+                System.out.println(arr[2]);
+            }
+        }
+        entry.setName(lastRowName);
+        manager.merge(entry);
+    }*/
 
     /*@Test
     @InSequence(3)
