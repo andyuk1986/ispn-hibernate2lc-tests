@@ -269,48 +269,5 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
 
         tx.commit();
     }
-
-    /*@Test
-    @InSequence(9)
-    @OperateOnDeployment("node1")
-    public void testTransactionalInsertRollbackCaseNode1() throws Exception {
-        EmbeddedCacheManager cacheManager = prepareCache(manager, ENTITY_CACHE_NAME);
-        DBEntry entry1 = new DBEntry("transactionalDBEntryName", new Date());
-
-        try {
-            tx.begin();
-            manager.persist(entry1);
-
-            //Doing something non-acceptable for throwing an exception
-            int someCalcValue = 5 / 0;
-
-            DBEntry entry2 = manager.find(DBEntry.class, rowCountInDb);
-            entry2.setName("aaaaaa");
-
-            entry2 = manager.merge(entry2);
-            tx.commit();
-        } catch(Exception ex) {
-            System.out.println("Transaction have been rolled back!");
-        }
-
-        Map<CacheKey, CacheEntry> entryCacheMap = cacheManager.getCache(ENTITY_CACHE_NAME);
-        assertCacheManagerStatistics(entryCacheMap, 0, null);
-
-        DBEntry entry2 = manager.find(DBEntry.class, rowCountInDb);
-        Assert.assertEquals("The name of entity should not be changed.", lastRowName, entry2.getName());
-    }
-
-    @Test
-    @InSequence(10)
-    @OperateOnDeployment("node2")
-    public void testTransactionalInsertRollbackCaseNode2() throws Exception {
-        EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
-        Map<CacheKey, CacheEntry> entryCacheMap = cacheManager.getCache(ENTITY_CACHE_NAME);
-        assertCacheManagerStatistics(entryCacheMap, 0, null);
-
-        DBEntry entry2 = manager.find(DBEntry.class, rowCountInDb);
-        Assert.assertEquals("The name of entity should not be changed.", lastRowName, entry2.getName());
-    }*/
-
 }
 
