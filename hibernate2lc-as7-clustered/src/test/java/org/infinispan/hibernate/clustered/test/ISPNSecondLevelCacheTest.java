@@ -8,16 +8,16 @@ import org.infinispan.manager.EmbeddedCacheManager;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.OperateOnDeployment;
 import org.jboss.arquillian.container.test.api.TargetsContainer;
-import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.junit.InSequence;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Assert;
 import org.junit.Test;
 
-import javax.annotation.Resource;
-import javax.persistence.*;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.transaction.UserTransaction;
-import java.io.Serializable;
 import java.util.*;
 
 import static junit.framework.Assert.assertEquals;
@@ -34,18 +34,25 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
     private String lastColRowName = "testCol10000";
     private int newCreateElementId = 10001;
 
+    private String changedRowName = "testChanged";
+
+    private int queryCacheSize = 500;
+
+
     @PersistenceContext
     EntityManager manager;
+
+    @Inject
+    UserTransaction tx;
 
     @Deployment(name = "node1")
     @TargetsContainer("container1")
     public static WebArchive createNode1Deployment() {
         WebArchive jar = createInfinispan2LCWebArchive(NODE1_WAR_NAME);
-        /*jar.addAsResource(PERSISTENCE_URL)
+        jar.addAsResource(PERSISTENCE_URL)
                 .addAsResource(INFINISPAN_CONFIG_NAME)
-                .addAsResource(JGROUPS_CONFIG_NAME)*/
-                jar.addAsManifestResource(MANIFEST_FILE_NAME)
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addAsResource(JGROUPS_CONFIG_NAME)
+                .addAsManifestResource(MANIFEST_FILE_NAME);
 
         System.out.println(jar.toString(true));
 
@@ -56,10 +63,10 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
     @TargetsContainer("container2")
     public static WebArchive createNode2Deployment() {
         WebArchive jar = createInfinispan2LCWebArchive(NODE1_WAR_NAME);
-        /*jar.addAsResource(PERSISTENCE_URL)
+        jar.addAsResource(PERSISTENCE_URL)
                 .addAsResource(INFINISPAN_CONFIG_NAME)
-                .addAsResource(JGROUPS_CONFIG_NAME)*/
-                jar.addAsManifestResource(MANIFEST_FILE_NAME);
+                .addAsResource(JGROUPS_CONFIG_NAME)
+                .addAsManifestResource(MANIFEST_FILE_NAME);
 
         System.out.println(jar.toString(true));
 
@@ -69,12 +76,49 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
     @Test
     @InSequence(1)
     @OperateOnDeployment("node1")
-    public void testSecondLevelCacheForEntitiesAndCollectionsNode1() throws Exception {
-        EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
+    public void testSecondLevelCacheForQueriesNode1() throws Exception {
+        EmbeddedCacheManager cacheManager = prepareCache(manager, QUERY_CACHE_NAME);
 
-        long startTime = System.currentTimeMillis();
+        tx.begin();
+
+        Query query = manager.createNamedQuery("listAllEntries").setMaxResults(queryCacheSize);
+        List<DBEntry> entries = query.getResultList();
+
+        manager.flush();
+        tx.commit();
+        manager.clear();
+
+        assertEquals("The book list should be 500", queryCacheSize, entries.size());
+
+        Map<CacheKey, CacheEntry> cachemap = cacheManager.getCache(QUERY_CACHE_NAME);
+        assertCacheManagerStatistics(cachemap, 1, null);
+
+        Map<CacheKey, CacheEntry> entityCacheMap = cacheManager.getCache(ENTITY_CACHE_NAME);
+
+        //Entries with collections should be stored in the cache.
+        assertCacheManagerStatistics(entityCacheMap, 2 * queryCacheSize, null);
+    }
+
+    @Test
+    @InSequence(2)
+    @OperateOnDeployment("node2")
+    public void testSecondLevelCacheForQueriesNode2() throws Exception {
+        EmbeddedCacheManager cacheManager= getCacheManager(manager.getEntityManagerFactory());
+
+        Map<CacheKey, CacheEntry> queryCache = cacheManager.getCache(QUERY_CACHE_NAME);
+        assertCacheManagerStatistics(queryCache, 1, null);
+
+        Map<CacheKey, CacheEntry> entityCache = cacheManager.getCache(ENTITY_CACHE_NAME);
+        assertCacheManagerStatistics(entityCache, 2 * queryCacheSize, null);
+    }
+
+    @Test
+    @InSequence(3)
+    @OperateOnDeployment("node1")
+    public void testSecondLevelCacheForEntitiesAndCollectionsNode1() throws Exception {
+        EmbeddedCacheManager cacheManager = prepareCache(manager, ENTITY_CACHE_NAME);
+
         DBEntry entry = manager.find(DBEntry.class, rowCountInDb);
-        long durationBeforeCache = System.currentTimeMillis() - startTime;
 
         assertNotNull(entry);
         assertEquals("The entry name should be test " + rowCountInDb, lastRowName, entry.getName());
@@ -100,11 +144,9 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
     }
 
     @Test
-    @InSequence(2)
+    @InSequence(4)
     @OperateOnDeployment("node2")
     public void testSecondLevelCacheForEntitiesAndCollectionsNode2() throws Exception {
-        long startTime = System.currentTimeMillis();
-
         EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
         Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
         DBEntry entry = new DBEntry(lastRowName, new Date());
@@ -132,100 +174,80 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
     }
 
     @Test
-    @InSequence(3)
-    @OperateOnDeployment("node1")
-    public void testDataInsertionNode1() throws Exception {
-        EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
-        Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
-        //Clearing cache
-        cacheElems.clear();
-        //checking that the cache is empty
-        assertCacheManagerStatistics(cacheElems, 0, null);
-
-        DBEntry entry = new DBEntry(dbEntryName, new Date());
-        manager.persist(entry);
-
-        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
-
-        Set cacheNames = cacheManager.getCacheNames();
-        for (Iterator iterator = cacheNames.iterator(); iterator.hasNext(); ) {
-            Object next = iterator.next();
-            System.out.println(next);
-        }
-        /*Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
-        entry = new DBEntry(lastRowName, new Date());
-        DBEntryCollection collection = new DBEntryCollection(lastColRowName, entry);
-
-        Set<DBEntryCollection> set = new HashSet<DBEntryCollection>();
-        set.add(collection);
-        entry.setCollection(set);
-        expectedElems.put(rowCountInDb, entry);*/
-
-        assertCacheManagerStatistics(cacheElems, 1, null);
-
-        //manager.close();
-        //emf.close();
-    }
-
-    @Test
-    @InSequence(4)
-    @OperateOnDeployment("node2")
-    public void testDataInsertionNode2() throws Exception {
-        EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
-        Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
-
-        assertCacheManagerStatistics(cacheElems, 1, null);
-        DBEntry entry = manager.find(DBEntry.class, rowCountInDb);
-
-        Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
-        expectedElems.put(rowCountInDb, entry);
-
-        System.out.println(entry);
-        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
-        assertCacheManagerStatistics(cacheElems, 3, expectedElems);
-
-        System.out.println(manager.find(DBEntry.class, newCreateElementId));
-
-        //Rolling back all changes
-        //manager.remove(entry);
-
-        //cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
-        //assertCacheManagerStatistics(cacheElems, 2, expectedElems);
-
-        //manager.close();
-        //emf.close();
-    }
-
-    /*
-    @Test
     @InSequence(5)
     @OperateOnDeployment("node1")
-    public void testDataUpdateNode1() throws Exception {
-        EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
+    public void testDataInsertionNode1() throws Exception {
+        EmbeddedCacheManager cacheManager = prepareCache(manager, ENTITY_CACHE_NAME);
+        Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
 
-        DBEntry entry = manager.find(DBEntry.class, rowCountInDb);
+        DBEntry entry = new DBEntry(dbEntryName, new Date());
+        tx.begin();
+        manager.persist(entry);
+        tx.commit();
 
         Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
-        expectedElems.put(rowCountInDb, entry);
+        expectedElems.put(newCreateElementId, entry);
 
-        Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
-        assertCacheManagerStatistics(cacheElems, 2, expectedElems);
-
-        entry.setName("testulik");
-        manager.setFlushMode(FlushModeType.COMMIT);
-        entry = manager.merge(entry);
-
-        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
-        assertCacheManagerStatistics(cacheElems, 2, expectedElems);
+        assertCacheManagerStatistics(cacheElems, 1, expectedElems);
     }
 
     @Test
     @InSequence(6)
     @OperateOnDeployment("node2")
+    public void testDataInsertionNode2() throws Exception {
+        EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
+        Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
+
+        Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
+        DBEntry entry = new DBEntry(dbEntryName, new Date());
+        expectedElems.put(rowCountInDb, entry);
+
+        assertCacheManagerStatistics(cacheElems, 1, expectedElems);
+
+        tx.begin();
+
+        entry = manager.find(DBEntry.class, newCreateElementId);
+
+        assertCacheManagerStatistics(cacheElems, 1, expectedElems);
+
+        //Rolling back all changes
+        manager.remove(entry);
+        tx.commit();
+
+        assertCacheManagerStatistics(cacheElems, 0, null);
+    }
+
+    @Test
+    @InSequence(7)
+    @OperateOnDeployment("node1")
+    public void testDataUpdateNode1() throws Exception {
+        EmbeddedCacheManager cacheManager = prepareCache(manager, ENTITY_CACHE_NAME);
+
+        tx.begin();
+        DBEntry entry = manager.find(DBEntry.class, rowCountInDb);
+
+        Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
+        expectedElems.put(rowCountInDb, entry);
+
+        Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
+        assertCacheManagerStatistics(cacheElems, 2, expectedElems);
+
+        entry.setName(changedRowName);
+        entry = manager.merge(entry);
+
+        tx.commit();
+
+        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
+        assertCacheManagerStatistics(cacheElems, 2, expectedElems);
+    }
+
+    @Test
+    @InSequence(8)
+    @OperateOnDeployment("node2")
     public void testDataUpdateNode2() throws Exception {
         EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
 
-        DBEntry entry = new DBEntry("testulik", new Date());
+        DBEntry entry = new DBEntry(changedRowName, new Date());
         DBEntryCollection col = new DBEntryCollection(lastColRowName, entry);
 
         Set<DBEntryCollection> colSet = new HashSet<DBEntryCollection>();
@@ -236,127 +258,59 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
         expectedElems.put(rowCountInDb, entry);
 
         Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
-       // assertCacheManagerStatistics(cacheElems, 2, expectedElems);
+        assertCacheManagerStatistics(cacheElems, 2, expectedElems);
 
+        tx.begin();
         //Rolling back all actions
         entry = manager.find(DBEntry.class, rowCountInDb);
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        for (Iterator<CacheEntry> iterator = cacheElems.values().iterator(); iterator.hasNext(); ) {
-            CacheEntry next = iterator.next();
-            Serializable[] arr = next.getDisassembledState();
 
-            System.out.println(next.getDisassembledState()[1]);
-
-            if(arr.length > 2) {
-                System.out.println(arr[2]);
-            }
-        }
         entry.setName(lastRowName);
         manager.merge(entry);
-    }*/
+
+        tx.commit();
+    }
 
     /*@Test
-    @InSequence(3)
+    @InSequence(9)
     @OperateOnDeployment("node1")
-    public void testSecondLevelCacheForQueriesNode1() throws Exception {
-        Query query = manager.createNamedQuery("listAllEntries");
+    public void testTransactionalInsertRollbackCaseNode1() throws Exception {
+        EmbeddedCacheManager cacheManager = prepareCache(manager, ENTITY_CACHE_NAME);
+        DBEntry entry1 = new DBEntry("transactionalDBEntryName", new Date());
 
-        long startTime = System.currentTimeMillis();
-        List<DBEntry> entries = query.getResultList();
-        firstExecutionDuration = System.currentTimeMillis() - startTime;
+        try {
+            tx.begin();
+            manager.persist(entry1);
 
-        assertEquals("The book list should be 10000", rowCountInDb, entries.size());
+            //Doing something non-acceptable for throwing an exception
+            int someCalcValue = 5 / 0;
 
-        DBEntry lastEntry = entries.get(rowCountInDb - 1);
-        assertEquals("The name of the last element should be predefined", lastRowName, lastEntry.getName());
+            DBEntry entry2 = manager.find(DBEntry.class, rowCountInDb);
+            entry2.setName("aaaaaa");
 
-        Set<DBEntryCollection> lastCol = lastEntry.getCollection();
-        for (Iterator<DBEntryCollection> iterator = lastCol.iterator(); iterator.hasNext(); ) {
-            DBEntryCollection next = iterator.next();
-
-            assertEquals("The name of the last element should be predefined", lastColRowName, next.getName());
+            entry2 = manager.merge(entry2);
+            tx.commit();
+        } catch(Exception ex) {
+            System.out.println("Transaction have been rolled back!");
         }
 
-        System.out.println("The duration First time: " + firstExecutionDuration);
+        Map<CacheKey, CacheEntry> entryCacheMap = cacheManager.getCache(ENTITY_CACHE_NAME);
+        assertCacheManagerStatistics(entryCacheMap, 0, null);
 
-        manager.flush();
-
-        //manager.getTransaction().commit();
-
-        manager.close();
-        //emf.close();
+        DBEntry entry2 = manager.find(DBEntry.class, rowCountInDb);
+        Assert.assertEquals("The name of entity should not be changed.", lastRowName, entry2.getName());
     }
 
     @Test
-    @InSequence(3)
+    @InSequence(10)
     @OperateOnDeployment("node2")
-    public void testSecondLevelCacheForQueriesNode2() throws Exception {
-        EmbeddedCacheManager cacheManager= getCacheManager(manager.getEntityManagerFactory());
-        Map<CacheKey, CacheEntry> queryCache = cacheManager.getCache(QUERY_CACHE_NAME);
-        assertCacheManagerStatistics(queryCache, 1, null);
+    public void testTransactionalInsertRollbackCaseNode2() throws Exception {
+        EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
+        Map<CacheKey, CacheEntry> entryCacheMap = cacheManager.getCache(ENTITY_CACHE_NAME);
+        assertCacheManagerStatistics(entryCacheMap, 0, null);
 
-        Map<CacheKey, CacheEntry> entityCache = cacheManager.getCache(ENTITY_CACHE_NAME);
-        assertEquals("The number of entities in the cache should be 2*" + rowCountInDb, 2 * rowCountInDb, entityCache.size());
-
-        Query query = manager.createNamedQuery("listAllEntries");
-
-        long startTime = System.currentTimeMillis();
-        List<DBEntry> entries = query.getResultList();
-        secondExecutionDuration = System.currentTimeMillis() - startTime;
-
-        assertEquals("The book list should be " + rowCountInDb, rowCountInDb, entries.size());
-
-        DBEntry lastEntry = entries.get(rowCountInDb - 1);
-        assertEquals("The name of the last element should be predefined", lastRowName, lastEntry.getName());
-
-        Set<DBEntryCollection> lastCol = lastEntry.getCollection();
-        for (Iterator<DBEntryCollection> iterator = lastCol.iterator(); iterator.hasNext(); ) {
-            DBEntryCollection next = iterator.next();
-
-            assertEquals("The name of the last element should be predefined", lastColRowName, next.getName());
-        }
-
-        System.out.println("The duration Second time: " + secondExecutionDuration);
-        /*assertTrue("The duration second time should be much more lower: FIRST TIME EXECUTION: " + firstExecutionDuration
-                + " SECOND TIME EXEC: " + secondExecutionDuration, firstExecutionDuration - secondExecutionDuration > 0);*/
-   // }
-
-    /*
-
-    /*@Test
-    public void testDataInsertion() throws NamingException {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-        EntityManager manager = emf.createEntityManager();
-
-        InitialContext ctx = new InitialContext();
-        SessionFactory factory = (SessionFactory) ctx.lookup("SessionFactories/testSF");
-        Statistics stat = factory.getStatistics();
-        SecondLevelCacheStatistics statistics = stat.getSecondLevelCacheStatistics("local-entity");
-        SecondLevelCacheStatistics statisticsCol = stat.getSecondLevelCacheStatistics("local-collection");
-
-        DBEntry entry = new DBEntry(dbEntryName, new Date());
-        DBEntryCollection collection = new DBEntryCollection(collectioName1, entry);
-        DBEntryCollection collection1 = new DBEntryCollection(collectioName2, entry);
-
-        Set<DBEntryCollection> collectionSet = new HashSet<>();
-        collectionSet.add(collection);
-        collectionSet.add(collection1);
-
-        entry.setCollection(collectionSet);
-
-        //Checking 2LC statistics
-        assertStatistics(statistics, 0, 0, 0);
-
-        manager.persist(entry);
-
-        assertStatistics(statistics, 0, 0, 0);
-        assertStatistics(statisticsCol, 0, 0, 0);
-
-        entry = manager.find(DBEntry.class, newCreateElementId);
-
-        assertStatistics(statistics, 0, 0, 0);
-
-        manager.remove(entry);
+        DBEntry entry2 = manager.find(DBEntry.class, rowCountInDb);
+        Assert.assertEquals("The name of entity should not be changed.", lastRowName, entry2.getName());
     }*/
+
 }
 

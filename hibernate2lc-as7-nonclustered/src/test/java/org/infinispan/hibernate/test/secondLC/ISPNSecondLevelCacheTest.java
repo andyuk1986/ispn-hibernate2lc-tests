@@ -12,11 +12,10 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 
+import javax.inject.Inject;
 import javax.naming.InitialContext;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
+import javax.persistence.*;
+import javax.transaction.UserTransaction;
 import java.util.*;
 
 import static junit.framework.Assert.*;
@@ -32,6 +31,13 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
     private String lastColRowName = "testCol10000";
     private int newCreateElementId = 10001;
 
+    @PersistenceContext
+    EntityManager manager;
+
+    @Inject
+    UserTransaction tx;
+    private String changedRowName = "testChanged";
+
     @Deployment
     public static WebArchive createDeployment() {
         WebArchive jar = createInfinispan2LCWebArchive(WAR_NAME);
@@ -46,23 +52,15 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
 
     @Test
     public void testSecondLevelCacheForQueries() throws Exception {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-        EntityManager manager = emf.createEntityManager();
+        EmbeddedCacheManager cacheManager = prepareCache(QUERY_CACHE_NAME);
 
-        EmbeddedCacheManager cacheManager = getCacheManager(emf);
-        Map queryCache = cacheManager.getCache(QUERY_CACHE_NAME);
-
-        InitialContext ctx = new InitialContext();
-        SessionFactory factory = (SessionFactory) ctx.lookup("SessionFactories/testSF");
-        Statistics stat = factory.getStatistics();
-
-        assertCacheManagerStatistics(queryCache, 0, null);
+        tx.begin();
 
         Query query = manager.createNamedQuery("listAllEntries");
-
-        long startTime = System.currentTimeMillis();
         List<DBEntry> entries = query.getResultList();
-        long durationFirstTime = System.currentTimeMillis() - startTime;
+
+        manager.flush();
+        tx.commit();
 
         assertEquals("The book list should be 10000", rowCountInDb, entries.size());
 
@@ -76,136 +74,74 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
             assertEquals("The name of the last element should be predefined", lastColRowName, next.getName());
         }
 
-        assertQueryCacheStatistics(stat, 0, 1, 1);
-        queryCache = cacheManager.getCache(QUERY_CACHE_NAME);
-        assertCacheManagerStatistics(queryCache, 1, null);
+        Map<CacheKey, CacheEntry> cachemap = cacheManager.getCache(QUERY_CACHE_NAME);
+        assertCacheManagerStatistics(cachemap, 1, null);
 
-        query = manager.createNamedQuery("listAllEntries");
-        startTime = System.currentTimeMillis();
-        entries = query.getResultList();
-        long durationSecondTime = System.currentTimeMillis() - startTime;
-
-        assertTrue("The duration second time should be lower", durationFirstTime - durationSecondTime > 0 );
-
-        assertQueryCacheStatistics(stat, 1, 1, 1);
-
-        queryCache = cacheManager.getCache(QUERY_CACHE_NAME);
-        assertCacheManagerStatistics(queryCache, 1, null);
-
-        manager.close();
-        emf.close();
-        factory.close();
+        Map<CacheKey, CacheEntry> entityCacheMap = cacheManager.getCache(ENTITY_CACHE_NAME);
+        assertCacheManagerStatistics(entityCacheMap, 2 * rowCountInDb, null);
     }
 
     @Test
     public void testSecondLevelCacheForEntitiesAndCollections() throws Exception {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-        EntityManager manager = emf.createEntityManager();
+        EmbeddedCacheManager cacheManager = prepareCache(ENTITY_CACHE_NAME);
 
-        InitialContext ctx = new InitialContext();
-        SessionFactory factory = (SessionFactory) ctx.lookup("SessionFactories/testSF");
-        Statistics stat = factory.getStatistics();
-        SecondLevelCacheStatistics statistics = stat.getSecondLevelCacheStatistics("local-entity");
-        SecondLevelCacheStatistics statisticsCol = stat.getSecondLevelCacheStatistics("local-collection");
-
-        EmbeddedCacheManager cacheManager = getCacheManager(emf);
-        Map cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
-        assertCacheManagerStatistics(cacheElems, 0, null);
-
-        long startTime = System.currentTimeMillis();
         DBEntry entry = manager.find(DBEntry.class, rowCountInDb);
-        long durationBeforeCache = System.currentTimeMillis() - startTime;
 
         assertNotNull(entry);
-        assertEquals("The entry name should be test10000", lastRowName, entry.getName());
-
-        System.out.println(statistics.getPutCount() + " " + statistics.getMissCount() + " " + statistics.getHitCount());
-        //Checking 2LC statistics
-        assertStatistics(statistics, 2, 1, 0);
-        assertStatistics(statisticsCol, 1, 0, 0);
+        assertEquals("The entry name should be test " + rowCountInDb, lastRowName, entry.getName());
 
         Set<DBEntryCollection> collection = entry.getCollection();
         for (Iterator<DBEntryCollection> iterator = collection.iterator(); iterator.hasNext(); ) {
             DBEntryCollection next = iterator.next();
 
-            assertEquals("The entry collection name should be testCol10000", lastColRowName, next.getName());
+            assertEquals("The entry collection name should be testCol " + rowCountInDb, lastColRowName, next.getName());
         }
 
         Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
+        entry = new DBEntry(lastRowName, new Date());
+        DBEntryCollection collection1 = new DBEntryCollection(lastColRowName, entry);
+
+        Set<DBEntryCollection> set = new HashSet<DBEntryCollection>();
+        set.add(collection1);
+        entry.setCollection(set);
         expectedElems.put(rowCountInDb, entry);
 
-        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
-        assertCacheManagerStatistics(cacheElems, 2, expectedElems);
-
-        startTime = System.currentTimeMillis();
-        entry = manager.find(DBEntry.class, rowCountInDb);
-        long durationAfterCache = System.currentTimeMillis() - startTime;
-
-        assertTrue("The duration of entity fetching should be less", durationBeforeCache - durationAfterCache > 0);
-        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
-        assertCacheManagerStatistics(cacheElems, 2, expectedElems);
-
-        //Checking 2LC statistics
-        assertStatistics(statistics, 2, 1, 0);
-        assertStatistics(statisticsCol, 1, 0, 0);
-
-        manager.close();
-        emf.close();
+        Map<CacheKey, CacheEntry> cachemap = cacheManager.getCache(ENTITY_CACHE_NAME);
+        assertCacheManagerStatistics(cachemap, 2, expectedElems);
     }
 
     @Test
     public void testDataInsertion() throws Exception {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-        EntityManager manager = emf.createEntityManager();
-
-        InitialContext ctx = new InitialContext();
-        SessionFactory factory = (SessionFactory) ctx.lookup("SessionFactories/testSF");
-        Statistics stat = factory.getStatistics();
-        SecondLevelCacheStatistics statistics = stat.getSecondLevelCacheStatistics("local-entity");
-        SecondLevelCacheStatistics statisticsCol = stat.getSecondLevelCacheStatistics("local-collection");
-
-        EmbeddedCacheManager cacheManager = getCacheManager(emf);
+        EmbeddedCacheManager cacheManager = prepareCache(ENTITY_CACHE_NAME);
         Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
 
-        assertCacheManagerStatistics(cacheElems, 0, null);
-        //Checking 2LC statistics
         DBEntry entry = new DBEntry(dbEntryName, new Date());
+        tx.begin();
         manager.persist(entry);
+        tx.commit();
 
-        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
         Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
         expectedElems.put(newCreateElementId, entry);
 
-        //assertCacheManagerStatistics(cacheElems, 1, expectedElems);
+        assertCacheManagerStatistics(cacheElems, 1, expectedElems);
 
-        entry = (DBEntry) manager.find(DBEntry.class, newCreateElementId);
+        tx.begin();
 
-        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
+        entry = manager.find(DBEntry.class, newCreateElementId);
         assertCacheManagerStatistics(cacheElems, 1, expectedElems);
 
         //Rolling back all changes
         manager.remove(entry);
+        tx.commit();
 
-        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
-        assertCacheManagerStatistics(cacheElems, 0, expectedElems);
-
-        manager.close();
-        emf.close();
+        assertCacheManagerStatistics(cacheElems, 0, null);
     }
 
     @Test
     public void testDataUpdate() throws Exception {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-        EntityManager manager = emf.createEntityManager();
+        EmbeddedCacheManager cacheManager = prepareCache(ENTITY_CACHE_NAME);
 
-        InitialContext ctx = new InitialContext();
-        SessionFactory factory = (SessionFactory) ctx.lookup("SessionFactories/testSF");
-        Statistics stat = factory.getStatistics();
-        SecondLevelCacheStatistics statistics = stat.getSecondLevelCacheStatistics("local-entity");
-        SecondLevelCacheStatistics statisticsCol = stat.getSecondLevelCacheStatistics("local-collection");
-
-        EmbeddedCacheManager cacheManager = getCacheManager(emf);
-
+        tx.begin();
         DBEntry entry = manager.find(DBEntry.class, rowCountInDb);
 
         Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
@@ -214,16 +150,32 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
         Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
         assertCacheManagerStatistics(cacheElems, 2, expectedElems);
 
-        entry.setName("testulik");
+        entry.setName(changedRowName);
         entry = manager.merge(entry);
+
+        tx.commit();
+
         cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
         assertCacheManagerStatistics(cacheElems, 2, expectedElems);
 
+        tx.begin();
         //Rolling back all actions
-        entry.setName(lastRowName);
-        entry = manager.merge(entry);
+        entry = manager.find(DBEntry.class, rowCountInDb);
 
-        manager.close();
-        emf.close();
+        entry.setName(lastRowName);
+        manager.merge(entry);
+
+        tx.commit();
+    }
+
+    private EmbeddedCacheManager prepareCache(final String cacheName) {
+        EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
+        Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(cacheName);
+        //Clearing cache
+        cacheElems.clear();
+        //checking that the cache is empty
+        assertCacheManagerStatistics(cacheElems, 0, null);
+
+        return cacheManager;
     }
 }

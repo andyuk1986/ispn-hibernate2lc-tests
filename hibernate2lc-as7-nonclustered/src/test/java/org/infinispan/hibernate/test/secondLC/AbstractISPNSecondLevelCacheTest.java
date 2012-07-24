@@ -43,8 +43,8 @@ public abstract class AbstractISPNSecondLevelCacheTest {
 
     protected static final String TESTABLE_PACKAGE = "org.infinispan.hibernate.test.secondLC";
 
-    protected static final String QUERY_CACHE_NAME = "local-query";
-    protected static final String ENTITY_CACHE_NAME = "local-entity";
+    protected static final String QUERY_CACHE_NAME = "testable.war#hib2Lc.local-query";
+    protected static final String ENTITY_CACHE_NAME = "testable.war#hib2Lc.local-entity";
 
     public static WebArchive createInfinispan2LCWebArchive(final String warName) {
         WebArchive war = ShrinkWrap.create(WebArchive.class, warName)
@@ -60,12 +60,6 @@ public abstract class AbstractISPNSecondLevelCacheTest {
                         new File("target/test-libs/hibernate-infinispan-4.1.3.Final.jar"));//.addAsResource("META-INF/jbossas-ds.xml");
 
         return war;
-    }
-
-    protected void assertStatistics(final SecondLevelCacheStatistics statistics, final int putCount, final int missCount, final int hitCount) {
-        assertTrue("The hit count should be " + hitCount, statistics.getHitCount() == hitCount);
-        assertTrue("The put count should be " + putCount, statistics.getPutCount() == putCount);
-        assertTrue("The miss count should be " + missCount, statistics.getMissCount() == missCount);
     }
 
     protected EmbeddedCacheManager getCacheManager(final EntityManagerFactory emf) {
@@ -98,12 +92,5 @@ public abstract class AbstractISPNSecondLevelCacheTest {
                 }
             }
         }
-    }
-
-    protected void assertQueryCacheStatistics(final Statistics stat, final int hitCount, final int putCount, final int missCount) {
-        //Checking 2LC statistics
-        assertEquals("The hit count should be " + hitCount, hitCount, stat.getQueryCacheHitCount());
-        assertEquals("The put count should be " + putCount, putCount, stat.getQueryCachePutCount());
-        assertEquals("The miss count should be " + missCount, missCount, stat.getQueryCacheMissCount());
     }
 }

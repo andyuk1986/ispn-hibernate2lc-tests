@@ -19,10 +19,7 @@ import org.junit.Test;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
+import javax.persistence.*;
 import javax.transaction.UserTransaction;
 import java.io.File;
 import java.util.*;
@@ -44,6 +41,9 @@ public class TransactionalISPNSecondLevelCacheTest extends AbstractISPNSecondLev
     private String lastColRowName = "testCol10000";
     private int newCreateElementId = 10001;
 
+    @PersistenceContext
+    EntityManager manager;
+
     @Deployment
     public static WebArchive createTransactionalDeployment() {
         WebArchive jar = createInfinispan2LCWebArchive(TRANSACTIONAL_WAR_NAME);
@@ -60,9 +60,6 @@ public class TransactionalISPNSecondLevelCacheTest extends AbstractISPNSecondLev
     @Test
     @InSequence(1)
     public void testTransactionalInsertCase() throws Exception {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-        EntityManager manager = emf.createEntityManager();
-
         DBEntry entry1 = new DBEntry(transactionalDbEntryName, new Date());
 
         DBEntry entry2 = null;
@@ -77,7 +74,7 @@ public class TransactionalISPNSecondLevelCacheTest extends AbstractISPNSecondLev
             ex.printStackTrace();
         }
 
-        EmbeddedCacheManager cacheManager = getCacheManager(emf);
+        EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
 
         Map<Integer, DBEntry> expectedValues = new HashMap<Integer, DBEntry>();
         expectedValues.put(rowCountInDb, entry2);
@@ -86,17 +83,11 @@ public class TransactionalISPNSecondLevelCacheTest extends AbstractISPNSecondLev
         Map<CacheKey, CacheEntry> elems = cacheManager.getCache(ENTITY_CACHE_NAME);
 
         assertCacheManagerStatistics(elems, 3, expectedValues);
-
-        manager.close();
-        emf.close();
     }
 
     @Test
     @InSequence(2)
     public void testTransactionalInsertRollbackCase() throws Exception {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-        EntityManager manager = emf.createEntityManager();
-
         DBEntry entry1 = new DBEntry(transactionalDbEntryName, new Date());
 
         try {
@@ -113,14 +104,11 @@ public class TransactionalISPNSecondLevelCacheTest extends AbstractISPNSecondLev
             System.out.println("Transaction have been rolled back!");
         }
 
-        EmbeddedCacheManager cacheManager = getCacheManager(emf);
+        EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
         Map<CacheKey, CacheEntry> entryCacheMap = cacheManager.getCache(ENTITY_CACHE_NAME);
         assertCacheManagerStatistics(entryCacheMap, 0, null);
 
         DBEntry entry2 = manager.find(DBEntry.class, rowCountInDb);
         assertEquals("The name of entity should not be changed.", lastRowName, entry2.getName());
-
-        manager.close();
-        emf.close();
     }
 }
