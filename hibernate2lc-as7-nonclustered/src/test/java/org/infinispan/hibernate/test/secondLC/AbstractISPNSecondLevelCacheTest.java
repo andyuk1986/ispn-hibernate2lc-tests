@@ -13,9 +13,11 @@ import org.infinispan.hibernate.test.secondLC.data.DBEntryCollection;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.runner.RunWith;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.io.File;
 import java.util.Iterator;
@@ -37,7 +39,6 @@ public abstract class AbstractISPNSecondLevelCacheTest {
     protected static final String INFINISPAN_CONFIG_NAME = "infinispan-config.xml";
     protected static final String MANIFEST_FILE_NAME = "MANIFEST.MF";
 
-    protected static final String TRANSACTIONAL_WAR_NAME = "transactionalTestable.war";
     protected static final String TRANSACTIONAL_PERSISTENCE_URL = "transactional/META-INF/persistence.xml";
     protected static final String TRANSACTIONAL_INFINISPAN_CONFIG_NAME = "transactional/infinispan-config.xml";
 
@@ -48,16 +49,15 @@ public abstract class AbstractISPNSecondLevelCacheTest {
 
     public static WebArchive createInfinispan2LCWebArchive(final String warName) {
         WebArchive war = ShrinkWrap.create(WebArchive.class, warName)
-                .addPackages(true, new String[]{ TESTABLE_PACKAGE })
+                .addPackages(true, new String[]{TESTABLE_PACKAGE})
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsLibraries(
                         new File("target/test-libs/hibernate-core-4.1.3.Final.jar"),
                         new File("target/test-libs/hibernate-commons-annotations-4.0.1.Final.jar"),
                         new File("target/test-libs/hibernate-jpa-2.0-api-1.0.1.Final.jar"),
-                        new File("target/test-libs/hibernate-validator-4.2.0.Final.jar"),
                         new File("target/test-libs/javassist-3.15.0-GA.jar"),
                         new File("target/test-libs/jboss-annotations-ejb3-4.2.2.GA.jar"),
-                        new File("target/test-libs/hibernate-core-4.1.3.Final.jar"),
-                        new File("target/test-libs/hibernate-infinispan-4.1.3.Final.jar"));//.addAsResource("META-INF/jbossas-ds.xml");
+                        new File("target/test-libs/hibernate-infinispan-4.1.3.Final.jar"));
 
         return war;
     }
@@ -92,5 +92,16 @@ public abstract class AbstractISPNSecondLevelCacheTest {
                 }
             }
         }
+    }
+
+    protected EmbeddedCacheManager prepareCache(final EntityManager manager, final String cacheName) {
+        EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
+        Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(cacheName);
+        //Clearing cache
+        cacheElems.clear();
+        //checking that the cache is empty
+        assertCacheManagerStatistics(cacheElems, 0, null);
+
+        return cacheManager;
     }
 }

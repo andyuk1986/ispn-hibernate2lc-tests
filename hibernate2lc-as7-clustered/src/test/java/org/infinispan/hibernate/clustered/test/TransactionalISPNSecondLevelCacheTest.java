@@ -46,7 +46,7 @@ public class TransactionalISPNSecondLevelCacheTest extends AbstractISPNSecondLev
     public static WebArchive createNode1Deployment() {
         WebArchive jar = createInfinispan2LCWebArchive(NODE1_WAR_NAME);
         jar.addAsResource(TRANSACTIONAL_PERSISTENCE_URL, PERSISTENCE_URL)
-                .addAsResource(TRANSACTIONAL_INFINISPAN_CONFIG_NAME, INFINISPAN_CONFIG_NAME)
+                .addAsResource(INFINISPAN_CONFIG_NAME, INFINISPAN_CONFIG_NAME)
                 .addAsManifestResource(MANIFEST_FILE_NAME)
                 .addAsResource(JGROUPS_CONFIG_NAME)
                 .addAsLibrary(new File("target/test-libs/jbossjta-4.16.4.Final.jar"));
@@ -61,7 +61,7 @@ public class TransactionalISPNSecondLevelCacheTest extends AbstractISPNSecondLev
     public static WebArchive createNode2Deployment() {
         WebArchive jar = createInfinispan2LCWebArchive(NODE1_WAR_NAME);
         jar.addAsResource(TRANSACTIONAL_PERSISTENCE_URL, PERSISTENCE_URL)
-                .addAsResource(TRANSACTIONAL_INFINISPAN_CONFIG_NAME, INFINISPAN_CONFIG_NAME)
+                .addAsResource(INFINISPAN_CONFIG_NAME, INFINISPAN_CONFIG_NAME)
                 .addAsResource(JGROUPS_CONFIG_NAME)
                 .addAsManifestResource(MANIFEST_FILE_NAME)
                 .addAsLibrary(new File("target/test-libs/jbossjta-4.16.4.Final.jar"));
@@ -75,15 +75,16 @@ public class TransactionalISPNSecondLevelCacheTest extends AbstractISPNSecondLev
     @InSequence(1)
     @OperateOnDeployment("node1")
     public void testTransactionalInsertCaseNode1() throws Exception {
-        DBEntry entry1 = new DBEntry("transactionalDBEntry", new Date());
+        DBEntry entry1 = new DBEntry(transactionalDbEntryName, new Date());
         DBEntry entry2 = null;
         try {
             tx.begin();
-            manager.persist(entry1);
             entry2 = manager.find(DBEntry.class, rowCountInDb);
             entry2.setName(changedRowName);
 
             entry2 = (DBEntry)manager.merge(entry2);
+
+            manager.persist(entry1);
             tx.commit();
         } catch(Exception ex) {
             ex.printStackTrace();
@@ -102,7 +103,7 @@ public class TransactionalISPNSecondLevelCacheTest extends AbstractISPNSecondLev
     @InSequence(2)
     @OperateOnDeployment("node2")
     public void testTransactionalInsertCaseNode2() throws Exception {
-        DBEntry entry1 = new DBEntry("transactionalDBEntry", new Date());
+        DBEntry entry1 = new DBEntry(transactionalDbEntryName, new Date());
         DBEntry entry2 = new DBEntry(changedRowName, new Date());
         DBEntryCollection col = new DBEntryCollection(lastColRowName, entry1);
         Set<DBEntryCollection> colSet = new HashSet<DBEntryCollection>();
@@ -138,7 +139,7 @@ public class TransactionalISPNSecondLevelCacheTest extends AbstractISPNSecondLev
     @OperateOnDeployment("node1")
     public void testTransactionalInsertRollbackCaseNode1() throws Exception {
         EmbeddedCacheManager cacheManager = prepareCache(manager, ENTITY_CACHE_NAME);
-        DBEntry entry1 = new DBEntry("transactionalDBEntryName", new Date());
+        DBEntry entry1 = new DBEntry(transactionalDbEntryName, new Date());
 
         try {
             tx.begin();

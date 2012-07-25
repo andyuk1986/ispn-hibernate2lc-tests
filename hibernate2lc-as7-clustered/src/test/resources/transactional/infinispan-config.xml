@@ -25,7 +25,7 @@
         <eviction maxEntries="10000" strategy="LRU"/>
         <expiration maxIdle="100000" wakeUpInterval="5000"/>
         <lazyDeserialization enabled="true"/>
-        <transaction transactionMode="TRANSACTIONAL" autoCommit="false"
+        <transaction transactionMode="TRANSACTIONAL" autoCommit="true"
                      lockingMode="OPTIMISTIC"/>
     </namedCache>
 
@@ -39,7 +39,7 @@
         <eviction maxEntries="10000" strategy="LRU"/>
         <expiration maxIdle="100000" wakeUpInterval="5000"/>
         <lazyDeserialization enabled="true"/>
-        <transaction transactionMode="TRANSACTIONAL" autoCommit="false"
+        <transaction transactionMode="TRANSACTIONAL" autoCommit="true"
                      lockingMode="OPTIMISTIC"/>
     </namedCache>
 

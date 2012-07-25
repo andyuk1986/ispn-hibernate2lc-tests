@@ -9,6 +9,7 @@ import org.infinispan.hibernate.test.secondLC.data.DBEntry;
 import org.infinispan.hibernate.test.secondLC.data.DBEntryCollection;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.InSequence;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 
@@ -19,6 +20,7 @@ import javax.transaction.UserTransaction;
 import java.util.*;
 
 import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 /**
  * Tests for infinispan hibernate 2lc.
@@ -30,6 +32,8 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
     private String lastRowName = "test10000";
     private String lastColRowName = "testCol10000";
     private int newCreateElementId = 10001;
+    private int queryCacheSize = 500;
+
 
     @PersistenceContext
     EntityManager manager;
@@ -52,38 +56,31 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
 
     @Test
     public void testSecondLevelCacheForQueries() throws Exception {
-        EmbeddedCacheManager cacheManager = prepareCache(QUERY_CACHE_NAME);
+        EmbeddedCacheManager cacheManager = prepareCache(manager, QUERY_CACHE_NAME);
 
         tx.begin();
 
-        Query query = manager.createNamedQuery("listAllEntries");
+        Query query = manager.createNamedQuery("listAllEntries").setMaxResults(queryCacheSize);
         List<DBEntry> entries = query.getResultList();
 
         manager.flush();
         tx.commit();
+        manager.clear();
 
-        assertEquals("The book list should be 10000", rowCountInDb, entries.size());
-
-        DBEntry lastEntry = entries.get(rowCountInDb - 1);
-        assertEquals("The name of the last element should be predefined", lastRowName, lastEntry.getName());
-
-        Set<DBEntryCollection> lastCol = lastEntry.getCollection();
-        for (Iterator<DBEntryCollection> iterator = lastCol.iterator(); iterator.hasNext(); ) {
-            DBEntryCollection next = iterator.next();
-
-            assertEquals("The name of the last element should be predefined", lastColRowName, next.getName());
-        }
+        assertEquals("The book list should be 500", queryCacheSize, entries.size());
 
         Map<CacheKey, CacheEntry> cachemap = cacheManager.getCache(QUERY_CACHE_NAME);
         assertCacheManagerStatistics(cachemap, 1, null);
 
         Map<CacheKey, CacheEntry> entityCacheMap = cacheManager.getCache(ENTITY_CACHE_NAME);
-        assertCacheManagerStatistics(entityCacheMap, 2 * rowCountInDb, null);
+
+        //Entries with collections should be stored in the cache.
+        assertCacheManagerStatistics(entityCacheMap, 2 * queryCacheSize, null);
     }
 
     @Test
     public void testSecondLevelCacheForEntitiesAndCollections() throws Exception {
-        EmbeddedCacheManager cacheManager = prepareCache(ENTITY_CACHE_NAME);
+        EmbeddedCacheManager cacheManager = prepareCache(manager, ENTITY_CACHE_NAME);
 
         DBEntry entry = manager.find(DBEntry.class, rowCountInDb);
 
@@ -112,7 +109,7 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
 
     @Test
     public void testDataInsertion() throws Exception {
-        EmbeddedCacheManager cacheManager = prepareCache(ENTITY_CACHE_NAME);
+        EmbeddedCacheManager cacheManager = prepareCache(manager, ENTITY_CACHE_NAME);
         Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
 
         DBEntry entry = new DBEntry(dbEntryName, new Date());
@@ -139,7 +136,7 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
 
     @Test
     public void testDataUpdate() throws Exception {
-        EmbeddedCacheManager cacheManager = prepareCache(ENTITY_CACHE_NAME);
+        EmbeddedCacheManager cacheManager = prepareCache(manager, ENTITY_CACHE_NAME);
 
         tx.begin();
         DBEntry entry = manager.find(DBEntry.class, rowCountInDb);
@@ -166,16 +163,5 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
         manager.merge(entry);
 
         tx.commit();
-    }
-
-    private EmbeddedCacheManager prepareCache(final String cacheName) {
-        EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
-        Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(cacheName);
-        //Clearing cache
-        cacheElems.clear();
-        //checking that the cache is empty
-        assertCacheManagerStatistics(cacheElems, 0, null);
-
-        return cacheManager;
     }
 }

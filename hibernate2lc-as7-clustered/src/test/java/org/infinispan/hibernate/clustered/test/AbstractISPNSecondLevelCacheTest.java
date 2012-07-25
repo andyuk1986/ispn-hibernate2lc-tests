@@ -94,7 +94,6 @@ public abstract class AbstractISPNSecondLevelCacheTest {
         }
     }
 
-
     protected EmbeddedCacheManager prepareCache(final EntityManager manager, final String cacheName) {
         EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
         Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(cacheName);

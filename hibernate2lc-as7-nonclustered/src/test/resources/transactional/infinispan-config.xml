@@ -11,6 +11,7 @@
                  lockAcquisitionTimeout="15000" useLockStriping="false"/>
         <eviction maxEntries="10000" strategy="LRU"/>
         <expiration maxIdle="100000" wakeUpInterval="5000"/>
+        <lazyDeserialization enabled="true"/>
         <transaction transactionMode="TRANSACTIONAL" autoCommit="true"
                      lockingMode="OPTIMISTIC"/>
     </namedCache>
@@ -20,7 +21,8 @@
                  lockAcquisitionTimeout="15000" useLockStriping="false"/>
         <eviction maxEntries="10000" strategy="LRU"/>
         <expiration maxIdle="100000" wakeUpInterval="5000"/>
-        <transaction transactionMode="TRANSACTIONAL" autoCommit="false"
+        <lazyDeserialization enabled="true"/>
+        <transaction transactionMode="TRANSACTIONAL" autoCommit="true"
                      lockingMode="OPTIMISTIC"/>
     </namedCache>
 
@@ -29,7 +31,8 @@
                  lockAcquisitionTimeout="15000" useLockStriping="false"/>
         <eviction maxEntries="10000" strategy="LRU"/>
         <expiration maxIdle="100000" wakeUpInterval="5000"/>
-        <transaction transactionMode="TRANSACTIONAL" autoCommit="false"
+        <lazyDeserialization enabled="true"/>
+        <transaction transactionMode="TRANSACTIONAL" autoCommit="true"
                      lockingMode="OPTIMISTIC"/>
     </namedCache>
 

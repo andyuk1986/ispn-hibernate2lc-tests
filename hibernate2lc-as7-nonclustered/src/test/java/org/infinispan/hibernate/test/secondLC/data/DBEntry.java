@@ -78,4 +78,8 @@ public class DBEntry implements Serializable {
     public void setCollection(Set<DBEntryCollection> collection) {
         this.collection = collection;
     }
+
+    public String toString() {
+        return id + ":" + name;
+    }
 }
