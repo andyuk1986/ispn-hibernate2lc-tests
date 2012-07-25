@@ -29,6 +29,19 @@
 
             <property name="hibernate.transaction.auto_close_session" value="true" />
 
+            <property name="hibernate.cache.infinispan.entity.eviction.strategy" value= "LRU"/>
+            <property name="hibernate.cache.infinispan.entity.eviction.wake_up_interval" value= "800"/>
+            <property name="hibernate.cache.infinispan.entity.eviction.max_entries" value= "10000"/>
+            <property name="hibernate.cache.infinispan.entity.expiration.lifespan" value= "7000"/>
+            <property name="hibernate.cache.infinispan.entity.expiration.max_idle" value= "7000"/>
+            <property name="hibernate.cache.infinispan.entity.expiration.wake_up_interval" value= "3000"/>
+
+            <property name="hibernate.cache.infinispan.query.eviction.strategy" value= "LRU"/>
+            <property name="hibernate.cache.infinispan.query.eviction.wake_up_interval" value= "800"/>
+            <property name="hibernate.cache.infinispan.query.eviction.max_entries" value= "10000"/>
+            <property name="hibernate.cache.infinispan.query.expiration.lifespan" value= "7000"/>
+            <property name="hibernate.cache.infinispan.query.expiration.max_idle" value= "7000"/>
+
         </properties>
     </persistence-unit>
 </persistence>

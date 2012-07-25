@@ -164,4 +164,34 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
 
         tx.commit();
     }
+
+    @Test
+    public void testQuerySecondLevelCacheExpiration() throws Exception {
+        EmbeddedCacheManager cacheManager = prepareCache(manager, QUERY_CACHE_NAME);
+        cacheManager.getCache(ENTITY_CACHE_NAME).clear();
+
+        tx.begin();
+
+        Query query = manager.createNamedQuery("listAllEntries").setMaxResults(queryCacheSize);
+        List<DBEntry> entries = query.getResultList();
+
+        manager.flush();
+        tx.commit();
+        manager.clear();
+
+        assertEquals("The book list should be 500", queryCacheSize, entries.size());
+
+        Map<CacheKey, CacheEntry> cachemap = cacheManager.getCache(QUERY_CACHE_NAME);
+        assertCacheManagerStatistics(cachemap, 1, null);
+
+        Map<CacheKey, CacheEntry> entityCacheMap = cacheManager.getCache(ENTITY_CACHE_NAME);
+
+        //Entries with collections should be stored in the cache.
+        assertCacheManagerStatistics(entityCacheMap, 2 * queryCacheSize, null);
+
+        //System.out.println("aaaaaaaaaaaaaaaaaaaa" + cacheManager.getCacheConfiguration(QUERY_CACHE_NAME).expiration().toString());
+        Thread.sleep(10000);
+        assertCacheManagerStatistics(entityCacheMap, 0, null);
+        //assertCacheManagerStatistics(cachemap, 0, null);
+    }
 }
