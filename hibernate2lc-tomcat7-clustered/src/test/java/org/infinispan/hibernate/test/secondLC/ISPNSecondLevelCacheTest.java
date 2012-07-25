@@ -12,6 +12,8 @@ import org.infinispan.hibernate.test.secondLC.data.DBEntry;
 import org.infinispan.hibernate.test.secondLC.data.DBEntryCollection;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.OperateOnDeployment;
+import org.jboss.arquillian.container.test.api.TargetsContainer;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 
@@ -31,20 +33,36 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
     private String lastColRowName = "testCol10000";
     private int newCreateElementId = 10001;
 
-    @Deployment
-    public static WebArchive createDeployment() {
+    @Deployment(name = "node1")
+    @TargetsContainer("container1")
+    public static WebArchive createNode1Deployment() {
         WebArchive jar = createInfinispan2LCWebArchive(WAR_NAME);
         jar.addAsResource(HIBERNATE_CFG_URL)
                 .addAsResource(INFINISPAN_CONFIG_NAME)
-                .addAsManifestResource(MANIFEST_FILE_NAME)
-                .addAsResource(WEB_XML_PATH);
+                //.addAsResource(JGROUPS_CONFIG_NAME)
+                .addAsManifestResource(MANIFEST_FILE_NAME);
 
         System.out.println(jar.toString(true));
 
         return jar;
     }
 
+    /*@Deployment(name = "node2")
+    @TargetsContainer("container2")
+    public static WebArchive createNode2Deployment() {
+        WebArchive jar = createInfinispan2LCWebArchive(WAR_NAME);
+        jar.addAsResource(HIBERNATE_CFG_URL)
+                .addAsResource(INFINISPAN_CONFIG_NAME)
+                //.addAsResource(JGROUPS_CONFIG_NAME)
+                .addAsManifestResource(MANIFEST_FILE_NAME);
+
+        System.out.println(jar.toString(true));
+
+        return jar;
+    }*/
+
     @Test
+    @OperateOnDeployment("node1")
     public void testSecondLevelCacheForQueries() {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.getCurrentSession();
@@ -97,6 +115,7 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
     }
 
     @Test
+    @OperateOnDeployment("node1")
     public void testSecondLevelCacheForEntitiesAndCollections() {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.getCurrentSession();
@@ -153,6 +172,7 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
     }
 
     @Test
+    @OperateOnDeployment("node1")
     public void testDataInsertion() {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.getCurrentSession();
@@ -201,6 +221,7 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
     }
 
     @Test
+    @OperateOnDeployment("node1")
     public void testDataUpdate() {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.getCurrentSession();

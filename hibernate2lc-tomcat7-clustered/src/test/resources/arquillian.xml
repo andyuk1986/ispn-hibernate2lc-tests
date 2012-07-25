@@ -2,21 +2,21 @@
 <arquillian xmlns="http://www.jboss.org/arquillian-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:schemaLocation="http://www.jboss.org/arquillian-1.0 http://jboss.org/schema/arquillian/arquillian-1.0.xsd">
 
-    <group qualifier="cluster">
+    <group qualifier="Cluster">
         <container qualifier="container1">
             <configuration>
-                <property name="unpackArchive">true</property>
+                <property name="catalinaHome">/usr/share/apache-tomcat-7.0.27</property>
+                <!--<property name="jmxPort">8999</property>-->
                 <property name="bindHttpPort">8080</property>
-                <property name="serverName">node1</property>
             </configuration>
         </container>
-        <container qualifier="container2">
+        <!--<container qualifier="container2">
             <configuration>
-                <property name="unpackArchive">true</property>
+                <property name="catalinaHome">/usr/share/apache-tomcat-7.0.27</property>
+                <property name="jmxPort">10089</property>
                 <property name="bindHttpPort">8180</property>
-                <property name="serverName">node2</property>
             </configuration>
-        </container>
+        </container>-->
     </group>
 
 </arquillian>

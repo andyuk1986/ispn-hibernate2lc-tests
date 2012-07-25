@@ -10,6 +10,7 @@ import org.hibernate.stat.Statistics;
 import org.infinispan.hibernate.test.secondLC.data.DBEntry;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.TargetsContainer;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
@@ -31,13 +32,29 @@ public class TransactionalISPNSecondLevelCacheTest extends AbstractISPNSecondLev
     private int rowCountInDb = 10000;
     private String lastRowName = "test10000";
 
-    @Deployment
-    public static WebArchive createTransactionalDeployment() {
-        WebArchive jar = createInfinispan2LCWebArchive(TRANSACTIONAL_WAR_NAME);
+    @Deployment(name = "node1")
+    @TargetsContainer("container1")
+    public static WebArchive createNode1Deployment() {
+        WebArchive jar = createInfinispan2LCWebArchive(WAR_NAME);
         jar.addAsResource(TRANSACTIONAL_HIBERNATE_CFG_XML, HIBERNATE_CFG_URL)
                 .addAsResource(TRANSACTIONAL_INFINISPAN_CONFIG_NAME, INFINISPAN_CONFIG_NAME)
+                        //.addAsResource(JGROUPS_CONFIG_NAME)
                 .addAsManifestResource(MANIFEST_FILE_NAME)
-                .addAsManifestResource(CONTEXT_XML_PATH)
+                .addAsLibrary(new File("target/test-libs/jbossjta-4.16.4.Final.jar"));
+
+        System.out.println(jar.toString(true));
+
+        return jar;
+    }
+
+    @Deployment(name = "node2")
+    @TargetsContainer("container2")
+    public static WebArchive createNode2Deployment() {
+        WebArchive jar = createInfinispan2LCWebArchive(WAR_NAME);
+        jar.addAsResource(TRANSACTIONAL_HIBERNATE_CFG_XML, HIBERNATE_CFG_URL)
+                .addAsResource(TRANSACTIONAL_INFINISPAN_CONFIG_NAME, INFINISPAN_CONFIG_NAME)
+                        //.addAsResource(JGROUPS_CONFIG_NAME)
+                .addAsManifestResource(MANIFEST_FILE_NAME)
                 .addAsLibrary(new File("target/test-libs/jbossjta-4.16.4.Final.jar"));
 
         System.out.println(jar.toString(true));

@@ -46,6 +46,8 @@ public abstract class AbstractISPNSecondLevelCacheTest {
     protected static final String LOCAL_ENTITY_CACHE_NAME = "local-entity";
     protected static final String QUERY_CACHE_NAME = "local-query";
 
+    protected static final String JGROUPS_CONFIG_NAME = "jgroups-tcp.xml";
+
     public static WebArchive createInfinispan2LCWebArchive(final String warName) {
         WebArchive war = ShrinkWrap.create(WebArchive.class, warName)
                 .addPackages(true, new String[]{TESTABLE_PACKAGE})
