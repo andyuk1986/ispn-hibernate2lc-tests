@@ -15,14 +15,14 @@ import java.util.Set;
 @Entity
 @Table(name = "entry")
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL, region = "local-entity")
+@Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL, region = "replicated-entity")
 @NamedQueries(
         @NamedQuery(
                 name = "listAllEntries",
                 query = "from DBEntry",
                 hints =  {
                         @QueryHint(name = "org.hibernate.cacheable", value = "true"),
-                        @QueryHint(name = "org.hibernate.cacheRegion", value = "local-query")
+                        @QueryHint(name = "org.hibernate.cacheRegion", value = "replicated-query")
                 }
         )
 )
@@ -70,7 +70,7 @@ public class DBEntry implements Serializable {
     }
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "entry")
-    @Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL, region = "local-collection")
+    @Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL, region = "replicated-collection")
     public Set<DBEntryCollection> getCollection() {
         return collection;
     }

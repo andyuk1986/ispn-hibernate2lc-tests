@@ -26,9 +26,9 @@
         <property name="hibernate.transaction.factory_class">org.hibernate.engine.transaction.internal.jta.JtaTransactionFactory</property>
         <property name="hibernate.transaction.jta.platform">org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform</property>
 
-        <property name="hibernate.cache.infinispan.entity.cfg">local-entity</property>
-        <property name="hibernate.cache.infinispan.collection.cfg">local-collection</property>
-        <property name="hibernate.cache.infinispan.query.cfg">local-query</property>
+        <property name="hibernate.cache.infinispan.entity.cfg">replicated-entity</property>
+        <property name="hibernate.cache.infinispan.collection.cfg">replicated-collection</property>
+        <property name="hibernate.cache.infinispan.query.cfg">replicated-query</property>
         <property name="hibernate.cache.infinispan.timestamp.cfg">timestamps</property>
 
 

@@ -51,7 +51,11 @@ public abstract class AbstractISPNSecondLevelCacheTest {
                 .addPackages(true, new String[]{TESTABLE_PACKAGE})
                 .addAsLibrary(new File("target/test-libs/mysql-connector-java-5.1.20.jar"))
                 .addAsLibraries(
+                        new File("target/test-libs/dom4j-1.6.1.jar"),
+                        new File("target/test-libs/jboss-logging-3.1.0.CR2.jar"),
+                        new File("target/test-libs/jta-1.1.jar"),
                         new File("target/test-libs/hibernate-core-4.1.3.Final.jar"),
+                        new File("target/test-libs/infinispan-core-5.1.2.FINAL.jar"),
                         new File("target/test-libs/hibernate-commons-annotations-4.0.1.Final.jar"),
                         new File("target/test-libs/hibernate-jpa-2.0-api-1.0.1.Final.jar"),
                         new File("target/test-libs/javassist-3.15.0-GA.jar"),

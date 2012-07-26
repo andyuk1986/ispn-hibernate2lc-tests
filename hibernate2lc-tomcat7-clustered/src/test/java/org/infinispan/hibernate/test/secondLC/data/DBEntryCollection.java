@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "entry_col")
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL, region = "local-entity")
+@Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL, region = "replicated-entity")
 public class DBEntryCollection {
     private int id;
     private String name;

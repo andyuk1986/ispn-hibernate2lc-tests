@@ -28,13 +28,11 @@ import static junit.framework.Assert.assertTrue;
  */
 @RunWith(Arquillian.class)
 public abstract class AbstractISPNSecondLevelCacheTest {
-    protected static final String PERSISTENCE_UNIT_NAME = "hib2Lc";
     protected static final String WAR_NAME = "testable.war";
 
     protected static final String HIBERNATE_CFG_URL = "hibernate.cfg.xml";
     protected static final String INFINISPAN_CONFIG_NAME = "infinispan-config.xml";
     protected static final String MANIFEST_FILE_NAME = "MANIFEST.MF";
-    protected static final String WEB_XML_PATH = "WEB-INF/web.xml";
     protected static final String CONTEXT_XML_PATH = "context.xml";
 
     protected static final String TRANSACTIONAL_WAR_NAME = "transactionalTestable.war";
@@ -43,8 +41,9 @@ public abstract class AbstractISPNSecondLevelCacheTest {
 
     protected static final String TESTABLE_PACKAGE = "org.infinispan.hibernate.test.secondLC";
 
-    protected static final String LOCAL_ENTITY_CACHE_NAME = "local-entity";
-    protected static final String QUERY_CACHE_NAME = "local-query";
+    protected static final String ENTITY_CACHE_NAME = "replicated-entity";
+    protected static final String COLLECTION_CACHE_NAME = "replicated-collection";
+    protected static final String QUERY_CACHE_NAME = "replicated-query";
 
     protected static final String JGROUPS_CONFIG_NAME = "jgroups-tcp.xml";
 
@@ -53,6 +52,14 @@ public abstract class AbstractISPNSecondLevelCacheTest {
                 .addPackages(true, new String[]{TESTABLE_PACKAGE})
                 .addAsLibrary(new File("target/test-libs/mysql-connector-java-5.1.20.jar"))
                 .addAsLibraries(
+                        new File("target/test-libs/infinispan-core-5.1.2.FINAL.jar"),
+                        new File("target/test-libs/dom4j-1.6.1.jar"),
+                        new File("target/test-libs/jta-1.1.jar"),
+                        new File("target/test-libs/jgroups-3.0.6.Final.jar"),
+                        new File("target/test-libs/jboss-marshalling-1.3.6.GA.jar"),
+                        new File("target/test-libs/jboss-marshalling-river-1.3.6.GA.jar"),
+                        new File("target/test-libs/antlr-2.7.7.jar"),
+                        new File("target/test-libs/jboss-logging-3.1.0.CR2.jar"),
                         new File("target/test-libs/hibernate-core-4.1.3.Final.jar"),
                         new File("target/test-libs/hibernate-commons-annotations-4.0.1.Final.jar"),
                         new File("target/test-libs/hibernate-jpa-2.0-api-1.0.1.Final.jar"),

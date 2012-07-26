@@ -14,6 +14,7 @@ import org.infinispan.manager.EmbeddedCacheManager;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.OperateOnDeployment;
 import org.jboss.arquillian.container.test.api.TargetsContainer;
+import org.jboss.arquillian.junit.InSequence;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 
@@ -33,13 +34,17 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
     private String lastColRowName = "testCol10000";
     private int newCreateElementId = 10001;
 
+    private String changedRowName = "changedRowName";
+
+    private int queryLimit = 500;
+
     @Deployment(name = "node1")
     @TargetsContainer("container1")
     public static WebArchive createNode1Deployment() {
         WebArchive jar = createInfinispan2LCWebArchive(WAR_NAME);
         jar.addAsResource(HIBERNATE_CFG_URL)
                 .addAsResource(INFINISPAN_CONFIG_NAME)
-                //.addAsResource(JGROUPS_CONFIG_NAME)
+                .addAsResource(JGROUPS_CONFIG_NAME)
                 .addAsManifestResource(MANIFEST_FILE_NAME);
 
         System.out.println(jar.toString(true));
@@ -47,31 +52,31 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
         return jar;
     }
 
-    /*@Deployment(name = "node2")
+    @Deployment(name = "node2")
     @TargetsContainer("container2")
     public static WebArchive createNode2Deployment() {
         WebArchive jar = createInfinispan2LCWebArchive(WAR_NAME);
         jar.addAsResource(HIBERNATE_CFG_URL)
                 .addAsResource(INFINISPAN_CONFIG_NAME)
-                //.addAsResource(JGROUPS_CONFIG_NAME)
+                .addAsResource(JGROUPS_CONFIG_NAME)
                 .addAsManifestResource(MANIFEST_FILE_NAME);
 
         System.out.println(jar.toString(true));
 
         return jar;
-    }*/
+    }
 
     @Test
+    @InSequence(1)
     @OperateOnDeployment("node1")
     public void testSecondLevelCacheForQueries() {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.getCurrentSession();
-        Statistics stat = sessionFactory.getStatistics();
 
         EmbeddedCacheManager cacheManager = getCacheManager(sessionFactory);
         //Executing the query for the first  time.
         session.beginTransaction();
-        Query query = session.getNamedQuery("listAllEntries");
+        Query query = session.getNamedQuery("listAllEntries").setMaxResults(queryLimit);
 
         Map<CacheKey, CacheEntry> queryCache = cacheManager.getCache(QUERY_CACHE_NAME);
         assertCacheManagerStatistics(queryCache, 0, null);
@@ -81,26 +86,16 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
         long durationFirstTime = System.currentTimeMillis() - startTime;
         session.getTransaction().commit();
 
-        assertEquals("The book list should be 10000", rowCountInDb, entries.size());
-
-        DBEntry lastEntry = entries.get(rowCountInDb - 1);
-        assertEquals("The name of the last element should be predefined", lastRowName, lastEntry.getName());
-
-        Set<DBEntryCollection> lastCol = lastEntry.getCollection();
-        for (Iterator<DBEntryCollection> iterator = lastCol.iterator(); iterator.hasNext(); ) {
-            DBEntryCollection next = iterator.next();
-
-            assertEquals("The name of the last element should be predefined", lastColRowName, next.getName());
-        }
-
-        assertQueryCacheStatistics(stat, 0, 1, 1);
         queryCache = cacheManager.getCache(QUERY_CACHE_NAME);
         assertCacheManagerStatistics(queryCache, 1, null);
+
+        Map<CacheKey, CacheEntry> entityCache = cacheManager.getCache(ENTITY_CACHE_NAME);
+        assertCacheManagerStatistics(entityCache, 2 * queryLimit, null);
 
         //Executing query for the second time.
         session = sessionFactory.getCurrentSession();
         session.beginTransaction();
-        query = session.getNamedQuery("listAllEntries");
+        query = session.getNamedQuery("listAllEntries").setMaxResults(queryLimit);
         startTime = System.currentTimeMillis();
         entries = query.list();
         session.getTransaction().commit();
@@ -109,23 +104,35 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
 
         assertTrue("The duration second time should be lower", durationFirstTime - durationSecondTime > 0 );
 
-        assertQueryCacheStatistics(stat, 1, 1, 1);
         queryCache = cacheManager.getCache(QUERY_CACHE_NAME);
         assertCacheManagerStatistics(queryCache, 1, null);
     }
 
     @Test
+    @InSequence(2)
+    @OperateOnDeployment("node2")
+    public void testSecondLevelCacheForQueriesNode2() {
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+        EmbeddedCacheManager cacheManager = getCacheManager(sessionFactory);
+
+        Map<CacheKey, CacheEntry> queryCache = cacheManager.getCache(QUERY_CACHE_NAME);
+        assertCacheManagerStatistics(queryCache, 1, null);
+
+        Map<CacheKey, CacheEntry> entityCache = cacheManager.getCache(ENTITY_CACHE_NAME);
+        assertCacheManagerStatistics(entityCache, 2 * queryLimit, null);
+    }
+
+    @Test
+    @InSequence(3)
     @OperateOnDeployment("node1")
-    public void testSecondLevelCacheForEntitiesAndCollections() {
+    public void testSecondLevelCacheForEntitiesAndCollectionsNode1() {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.getCurrentSession();
-        Statistics stat = sessionFactory.getStatistics();
-
-        SecondLevelCacheStatistics statistics = stat.getSecondLevelCacheStatistics("local-entity");
-        SecondLevelCacheStatistics statisticsCol = stat.getSecondLevelCacheStatistics("local-collection");
 
         EmbeddedCacheManager cacheManager = getCacheManager(sessionFactory);
-        Map cacheElems = cacheManager.getCache(LOCAL_ENTITY_CACHE_NAME);
+        Map cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
+        cacheElems.clear();
+
         assertCacheManagerStatistics(cacheElems, 0, null);
 
         session.beginTransaction();
@@ -137,11 +144,6 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
         assertNotNull(entry);
         assertEquals("The entry name should be test10000", lastRowName, entry.getName());
 
-        //Checking 2LC statistics
-        assertStatistics(statistics, 2, 1, 0);
-        assertStatistics(statisticsCol, 1, 0, 0);
-        assertTrue("The cache should be empty", cacheElems.size() == 2);
-
         Set<DBEntryCollection> collection = entry.getCollection();
         for (Iterator<DBEntryCollection> iterator = collection.iterator(); iterator.hasNext(); ) {
             DBEntryCollection next = iterator.next();
@@ -152,7 +154,7 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
         Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
         expectedElems.put(rowCountInDb, entry);
 
-        cacheElems = cacheManager.getCache(LOCAL_ENTITY_CACHE_NAME);
+        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
         assertCacheManagerStatistics(cacheElems, 2, expectedElems);
 
         session = sessionFactory.getCurrentSession();
@@ -163,28 +165,44 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
         session.getTransaction().commit();
 
         assertTrue("The duration of entity fetching should be less", durationBeforeCache - durationAfterCache > 0);
-        cacheElems = cacheManager.getCache(LOCAL_ENTITY_CACHE_NAME);
+        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
         assertCacheManagerStatistics(cacheElems, 2, expectedElems);
-
-        //Checking 2LC statistics
-        assertStatistics(statistics, 2, 1, 2);
-        assertStatistics(statisticsCol, 1, 0, 1);
     }
 
     @Test
-    @OperateOnDeployment("node1")
-    public void testDataInsertion() {
+    @InSequence(4)
+    @OperateOnDeployment("node2")
+    public void testSecondLevelCacheForEntitiesAndCollectionsNode2() {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
         Session session = sessionFactory.getCurrentSession();
-        Statistics stat = sessionFactory.getStatistics();
 
-        SecondLevelCacheStatistics statistics = stat.getSecondLevelCacheStatistics("local-entity");
         EmbeddedCacheManager cacheManager = getCacheManager(sessionFactory);
-        Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(LOCAL_ENTITY_CACHE_NAME);
+
+        Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
+        DBEntry entry = new DBEntry(lastRowName, new Date());
+        DBEntryCollection collection = new DBEntryCollection(lastColRowName, entry);
+
+        Set<DBEntryCollection> set = new HashSet<DBEntryCollection>();
+        set.add(collection);
+        entry.setCollection(set);
+        expectedElems.put(rowCountInDb, entry);
+
+        Map<CacheKey, CacheEntry> cachemap = cacheManager.getCache(ENTITY_CACHE_NAME);
+        assertCacheManagerStatistics(cachemap, 2, expectedElems);
+    }
+
+    @Test
+    @InSequence(5)
+    @OperateOnDeployment("node1")
+    public void testDataInsertionNode1() {
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.getCurrentSession();
+
+        EmbeddedCacheManager cacheManager = getCacheManager(sessionFactory);
+        Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
+        cacheElems.clear();
 
         assertCacheManagerStatistics(cacheElems, 0, null);
-        //Checking 2LC statistics
-        assertStatistics(statistics, 0, 0, 0);
 
         DBEntry entry = new DBEntry(dbEntryName, new Date());
 
@@ -192,9 +210,7 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
         session.persist(entry);
         session.getTransaction().commit();
 
-        assertStatistics(statistics, 1, 0, 0);
-
-        cacheElems = cacheManager.getCache(LOCAL_ENTITY_CACHE_NAME);
+        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
         Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
         expectedElems.put(newCreateElementId, entry);
 
@@ -205,9 +221,30 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
         entry = (DBEntry) session.get(DBEntry.class, newCreateElementId);
         session.getTransaction().commit();
 
-        assertStatistics(statistics, 1, 0, 1);
+        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
+        assertCacheManagerStatistics(cacheElems, 1, expectedElems);
+    }
 
-        cacheElems = cacheManager.getCache(LOCAL_ENTITY_CACHE_NAME);
+    @Test
+    @InSequence(6)
+    @OperateOnDeployment("node2")
+    public void testDataInsertionNode2() {
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.getCurrentSession();
+
+        EmbeddedCacheManager cacheManager = getCacheManager(sessionFactory);
+        Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
+
+        Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
+        DBEntry entry = new DBEntry(dbEntryName, new Date());
+        expectedElems.put(rowCountInDb, entry);
+
+        assertCacheManagerStatistics(cacheElems, 1, expectedElems);
+
+        session.beginTransaction();
+        entry = (DBEntry) session.get(DBEntry.class, newCreateElementId);
+        session.getTransaction().commit();
+
         assertCacheManagerStatistics(cacheElems, 1, expectedElems);
 
         //Rolling back all changes
@@ -216,56 +253,71 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
         session.delete(entry);
         session.getTransaction().commit();
 
-        cacheElems = cacheManager.getCache(LOCAL_ENTITY_CACHE_NAME);
-        assertCacheManagerStatistics(cacheElems, 0, expectedElems);
+        assertCacheManagerStatistics(cacheElems, 0, null);
     }
 
     @Test
+    @InSequence(7)
     @OperateOnDeployment("node1")
-    public void testDataUpdate() {
+    public void testDataUpdateNode1() {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-        Session session = sessionFactory.getCurrentSession();
-        Statistics stat = sessionFactory.getStatistics();
-
-        SecondLevelCacheStatistics statistics = stat.getSecondLevelCacheStatistics("local-entity");
-        SecondLevelCacheStatistics statisticsCol = stat.getSecondLevelCacheStatistics("local-collection");
 
         EmbeddedCacheManager cacheManager = getCacheManager(sessionFactory);
+        Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
+        cacheElems.clear();
 
+        Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
         DBEntry entry = (DBEntry) session.get(DBEntry.class, rowCountInDb);
         session.getTransaction().commit();
 
-        assertStatistics(statistics, 2, 1, 0);
+        Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
+        expectedElems.put(rowCountInDb, entry);
+
+        assertCacheManagerStatistics(cacheElems, 2, expectedElems);
+
+        entry.setName(changedRowName);
+        session = sessionFactory.getCurrentSession();
+        session.beginTransaction();
+        entry = (DBEntry) session.merge(entry);
+        session.getTransaction().commit();
+
+        assertEquals(changedRowName, entry.getName());
+
+        cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
+        assertCacheManagerStatistics(cacheElems, 2, expectedElems);
+    }
+
+    @Test
+    @InSequence(8)
+    @OperateOnDeployment("node2")
+    public void testDataUpdateNode2() {
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+        EmbeddedCacheManager cacheManager = getCacheManager(sessionFactory);
+
+        DBEntry entry = new DBEntry(changedRowName, new Date());
+        DBEntryCollection col = new DBEntryCollection(lastColRowName, entry);
+
+        Set<DBEntryCollection> colSet = new HashSet<DBEntryCollection>();
+        colSet.add(col);
+        entry.setCollection(colSet);
 
         Map<Integer, DBEntry> expectedElems = new HashMap<Integer, DBEntry>();
         expectedElems.put(rowCountInDb, entry);
 
-        Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(LOCAL_ENTITY_CACHE_NAME);
-        assertCacheManagerStatistics(cacheElems, 2, expectedElems);
-
-        entry.setName("testulik");
-        session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        entry = (DBEntry) session.merge(entry);
-        session.getTransaction().commit();
-
-        //As the merge method updates the db and returns the newly updated record, then the numbers should be as following:
-        // 3 puts - 2 were before, now the new updated record is added
-        // 1 miss - as before
-        //2 hits -
-        assertEquals("testulik", entry.getName());
-        assertStatistics(statistics, 3, 1, 2);
-        assertStatistics(statisticsCol, 1, 0, 1);
-
-        cacheElems = cacheManager.getCache(LOCAL_ENTITY_CACHE_NAME);
+        Map<CacheKey, CacheEntry> cacheElems = cacheManager.getCache(ENTITY_CACHE_NAME);
         assertCacheManagerStatistics(cacheElems, 2, expectedElems);
 
         //Rolling back all actions
-        entry.setName(lastRowName);
-        session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
+        entry = (DBEntry) session.get(DBEntry.class, rowCountInDb);
+        entry.setName(lastRowName);
+
         entry = (DBEntry) session.merge(entry);
         session.getTransaction().commit();
+
+        expectedElems.put(rowCountInDb, entry);
+        assertCacheManagerStatistics(cacheElems, 2, expectedElems);
     }
 }

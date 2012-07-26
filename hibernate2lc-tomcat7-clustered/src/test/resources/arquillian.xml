@@ -6,22 +6,25 @@
         <container qualifier="container1">
             <configuration>
                 <property name="catalinaHome">/usr/share/apache-tomcat-7.0.27</property>
-                <property name="javaVmArguments">-Xmx1024m -XX:MaxPermSize=512m</property>
                 <property name="jmxPort">8089</property>
                 <property name="bindHttpPort">8080</property>
-                <!-- [ARQ-630]. We'll use credentials with ISO-8859-1 characters for testing.
-   This also tests for US-ASCII support as the G0 subset overlaps with US-ASCII. -->
+                <property name="serverConfig">server.xml</property>
+                <property name="javaVmArguments">-Djava.net.preferIPv4Stack=true</property>
                 <property name="user">tomcat</property>
                 <property name="pass">tomcat</property>
             </configuration>
         </container>
-        <!--<container qualifier="container2">
+        <container qualifier="container2">
             <configuration>
-                <property name="catalinaHome">/usr/share/apache-tomcat-7.0.27</property>
+                <property name="catalinaHome">/usr/share/apache-tomcat-7.0.27_1</property>
                 <property name="jmxPort">10089</property>
                 <property name="bindHttpPort">8180</property>
+                <property name="serverConfig">server.xml</property>
+                <property name="javaVmArguments">-Djava.net.preferIPv4Stack=true</property>
+                <property name="user">tomcat</property>
+                <property name="pass">tomcat</property>
             </configuration>
-        </container>-->
+        </container>
     </group>
 
 </arquillian>

@@ -1,7 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b9f7c7b5-7332-4791-a96a-a51a74f388af" name="Default" comment="" />
+    <list default="true" id="b9f7c7b5-7332-4791-a96a-a51a74f388af" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/jgroups-tcp.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/server2.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/java/org/infinispan/hibernate/test/secondLC/TransactionalISPNSecondLevelCacheTest.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hibernate2lc-as7-clustered/hibernate2lc-as7-clustered.iml" afterPath="$PROJECT_DIR$/hibernate2lc-as7-clustered/hibernate2lc-as7-clustered.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hibernate2lc-as7-nonclustered/infinispan-hibernate2lc-tests.iml" afterPath="$PROJECT_DIR$/hibernate2lc-as7-nonclustered/infinispan-hibernate2lc-tests.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/hibernate2lc-tomcat7-clustered.iml" afterPath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/hibernate2lc-tomcat7-clustered.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/java/org/infinispan/hibernate/test/secondLC/AbstractISPNSecondLevelCacheTest.java" afterPath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/java/org/infinispan/hibernate/test/secondLC/AbstractISPNSecondLevelCacheTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/java/org/infinispan/hibernate/test/secondLC/ISPNSecondLevelCacheTest.java" afterPath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/java/org/infinispan/hibernate/test/secondLC/ISPNSecondLevelCacheTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/java/org/infinispan/hibernate/test/secondLC/data/DBEntry.java" afterPath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/java/org/infinispan/hibernate/test/secondLC/data/DBEntry.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/java/org/infinispan/hibernate/test/secondLC/data/DBEntryCollection.java" afterPath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/java/org/infinispan/hibernate/test/secondLC/data/DBEntryCollection.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/arquillian.xml" afterPath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/arquillian.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/hibernate.cfg.xml" afterPath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/hibernate.cfg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/infinispan-config.xml" afterPath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/infinispan-config.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/transactional/hibernate.cfg.xml" afterPath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/transactional/hibernate.cfg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/transactional/infinispan-config.xml" afterPath="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/transactional/infinispan-config.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hibernate2lc-tomcat7/hibernate2lc-tomcat7.iml" afterPath="$PROJECT_DIR$/hibernate2lc-tomcat7/hibernate2lc-tomcat7.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/hibernate2lc-tomcat7/src/test/java/org/infinispan/hibernate/test/secondLC/AbstractISPNSecondLevelCacheTest.java" afterPath="$PROJECT_DIR$/hibernate2lc-tomcat7/src/test/java/org/infinispan/hibernate/test/secondLC/AbstractISPNSecondLevelCacheTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ispn-hibernate2lc-tests.iml" afterPath="$PROJECT_DIR$/ispn-hibernate2lc-tests.iml" />
+    </list>
+    <list id="7b419bb7-89d5-41b0-9247-c15f53daf930" name="Non commitable" comment="" />
     <ignored path="ispn-hibernate2lc-tests.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -59,51 +81,18 @@
   <component name="FileEditorManager">
     <leaf>
       <file leaf-file-name="ISPNSecondLevelCacheTest.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/java/org/infinispan/hibernate/clustered/test/ISPNSecondLevelCacheTest.java">
+        <entry file="file://$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/java/org/infinispan/hibernate/test/secondLC/ISPNSecondLevelCacheTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="204" column="8" selection-start="7931" selection-end="7931" vertical-scroll-proportion="0.30522564">
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#3913#3932#0" expanded="true" />
-                <element signature="e#4939#4958#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DBEntry.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/java/org/infinispan/hibernate/clustered/test/data/DBEntry.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="75" selection-start="437" selection-end="437" vertical-scroll-proportion="0.0">
+            <state line="66" column="5" selection-start="2371" selection-end="2371" vertical-scroll-proportion="0.8016627">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DBEntryCollection.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/java/org/infinispan/hibernate/clustered/test/data/DBEntryCollection.java">
+      <file leaf-file-name="infinispan-config.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/transactional/infinispan-config.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="75" selection-start="367" selection-end="367" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AbstractISPNSecondLevelCacheTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/java/org/infinispan/hibernate/clustered/test/AbstractISPNSecondLevelCacheTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="90" column="48" selection-start="5040" selection-end="5040" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ISPNSecondLevelCacheTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/hibernate2lc-as7-nonclustered/src/test/java/org/infinispan/hibernate/test/secondLC/ISPNSecondLevelCacheTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="193" column="56" selection-start="6418" selection-end="8106" vertical-scroll-proportion="0.0">
+            <state line="51" column="13" selection-start="2427" selection-end="2427" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -116,25 +105,28 @@
       <setting name="OPEN_NEW_TAB" value="false" />
     </FindUsagesManager>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
+        <option value="$PROJECT_DIR$/hibernate2lc-tomcat7/pom.xml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/arquillian.launch" />
         <option value="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/pom.xml" />
+        <option value="$PROJECT_DIR$/hibernate2lc-tomcat7/src/test/java/org/infinispan/hibernate/test/secondLC/AbstractISPNSecondLevelCacheTest.java" />
+        <option value="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/infinispan-config.xml" />
         <option value="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/arquillian.xml" />
+        <option value="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/java/org/infinispan/hibernate/test/secondLC/data/DBEntry.java" />
+        <option value="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/java/org/infinispan/hibernate/test/secondLC/data/DBEntryCollection.java" />
+        <option value="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/hibernate.cfg.xml" />
+        <option value="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/java/org/infinispan/hibernate/test/secondLC/AbstractISPNSecondLevelCacheTest.java" />
+        <option value="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/transactional/hibernate.cfg.xml" />
+        <option value="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/transactional/infinispan-config.xml" />
         <option value="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/java/org/infinispan/hibernate/test/secondLC/TransactionalISPNSecondLevelCacheTest.java" />
-        <option value="$PROJECT_DIR$/hibernate2lc-as7-nonclustered/src/test/java/org/infinispan/hibernate/test/secondLC/AbstractISPNSecondLevelCacheTest.java" />
-        <option value="$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/resources/arquillian.launch" />
-        <option value="$PROJECT_DIR$/hibernate2lc-as7-clustered/pom.xml" />
-        <option value="$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/resources/transactional/META-INF/persistence.xml" />
-        <option value="$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/java/org/infinispan/hibernate/clustered/test/AbstractISPNSecondLevelCacheTest.java" />
-        <option value="$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/java/org/infinispan/hibernate/clustered/test/data/DBEntry.java" />
-        <option value="$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/java/org/infinispan/hibernate/clustered/test/data/DBEntryCollection.java" />
-        <option value="$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/resources/arquillian.xml" />
-        <option value="$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/resources/infinispan-config.xml" />
-        <option value="$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/resources/queries/testDbCreate.sql" />
-        <option value="$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/resources/META-INF/persistence.xml" />
-        <option value="$PROJECT_DIR$/hibernate2lc-as7-nonclustered/src/test/java/org/infinispan/hibernate/test/secondLC/ISPNSecondLevelCacheTest.java" />
-        <option value="$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/java/org/infinispan/hibernate/clustered/test/ISPNSecondLevelCacheTest.java" />
+        <option value="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/java/org/infinispan/hibernate/test/secondLC/TransactionalSecondLevelCacheTest.java" />
+        <option value="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/java/org/infinispan/hibernate/test/secondLC/ISPNSecondLevelCacheTest.java" />
       </list>
     </option>
   </component>
@@ -156,7 +148,7 @@
     <option name="width" value="1920" />
     <option name="height" value="1024" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
     <OptionsSetting value="true" id="Checkout" />
@@ -184,12 +176,12 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane">
-        <subPane>
+      <pane id="Scope">
+        <subPane subId="Project Files">
           <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -216,11 +208,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: org.hibernate:hibernate-entitymanager:4.1.3.Final" />
+              <option name="myItemId" value="Maven: org.jboss.arquillian.container:arquillian-tomcat-common:1.0.0.CR3" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate-entitymanager-4.1.3.Final.jar" />
+              <option name="myItemId" value="arquillian-tomcat-common-1.0.0.CR3.jar" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -228,7 +220,19 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate" />
+              <option name="myItemId" value="jboss" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="arquillian" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="container" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tomcat" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -242,159 +246,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: org.hibernate:hibernate-entitymanager:4.1.3.Final" />
+              <option name="myItemId" value="Maven: org.jboss.arquillian.container:arquillian-tomcat-common:1.0.0.CR3" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate-entitymanager-4.1.3.Final.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ejb" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: org.hibernate:hibernate-entitymanager:4.1.3.Final" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate-entitymanager-4.1.3.Final.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: org.hibernate:hibernate-core:4.1.3.Final" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate-core-4.1.3.Final.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: org.hibernate:hibernate-core:4.1.3.Final" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate-core-4.1.3.Final.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="internal" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: org.hibernate:hibernate-core:4.1.3.Final" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate-core-4.1.3.Final.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate-jpa-2.0-api-1.0.1.Final.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate-jpa-2.0-api-1.0.1.Final.jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="javax" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="persistence" />
+              <option name="myItemId" value="arquillian-tomcat-common-1.0.0.CR3.jar" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -418,7 +274,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate2lc-tomcat7" />
+              <option name="myItemId" value="hibernate2lc-tomcat7-clustered" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -432,7 +288,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate2lc-tomcat7" />
+              <option name="myItemId" value="hibernate2lc-tomcat7-clustered" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -458,87 +314,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate2lc-tomcat7" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate2lc-tomcat7" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate2lc-as7-nonclustered" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate2lc-as7-nonclustered" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate2lc-as7-nonclustered" />
+              <option name="myItemId" value="hibernate2lc-tomcat7-clustered" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -554,7 +330,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="queries" />
+              <option name="myItemId" value="transactional" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -568,7 +344,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate2lc-as7-nonclustered" />
+              <option name="myItemId" value="hibernate2lc-tomcat7-clustered" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -614,125 +390,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate2lc-as7-nonclustered" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate2lc-as7-clustered" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate2lc-as7-clustered" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate2lc-as7-clustered" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="queries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate2lc-as7-clustered" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="META-INF" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate2lc-as7-clustered" />
+              <option name="myItemId" value="hibernate2lc-tomcat7-clustered" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -760,57 +418,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="clustered" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ispn-hibernate2lc-tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate2lc-as7-clustered" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="test" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="org" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="infinispan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="clustered" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
+              <option name="myItemId" value="secondLC" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -828,7 +440,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="hibernate2lc-as7-clustered" />
+              <option name="myItemId" value="hibernate2lc-tomcat7-clustered" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -838,12 +450,12 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope">
-        <subPane subId="Project Files">
+      <pane id="PackagesPane">
+        <subPane>
           <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ispn-hibernate2lc-tests" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -851,37 +463,54 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="217" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="234" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
     <property name="recentsLimit" value="5" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="options.lastSelected" value="MavenSettings" />
-    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="223" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="240" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="1149" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="1147" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="238" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="232" />
     <property name="GoToClass.includeJavaFiles" value="false" />
-    <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="dynamic.classpath" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
+    <property name="options.lastSelected" value="project.propVCSSupport.VCSs.Git" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="options.searchVisible" value="true" />
+    <property name="dynamic.classpath" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.infinispan.hibernate.test.secondLC" />
       <recent name="org.infinispan.hibernate.clustered.test" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/resources/queries" />
       <recent name="$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/resources" />
       <recent name="$PROJECT_DIR$/hibernate2lc-tomcat7/src/test/resources/transactional" />
-      <recent name="$PROJECT_DIR$/hibernate2lc-tomcat7/src/test/resources" />
-      <recent name="$PROJECT_DIR$/hibernate2lc-tomcat7/src/test" />
-      <recent name="$PROJECT_DIR$/hibernate2lc-tomcat7/src/test/java" />
     </key>
   </component>
-  <component name="RunManager" selected="Maven.AS7 Clustered Tests">
+  <component name="RunManager" selected="Maven.Tomcat7 Clustered">
     <configuration default="false" name="ISPNSecondLevelCacheTest" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -889,7 +518,7 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <module name="hibernate2lc-tomcat7" />
+      <module name="hibernate2lc-tomcat7-clustered" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="org.infinispan.hibernate.test.secondLC" />
@@ -906,13 +535,7 @@
       </option>
       <envs />
       <patterns />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
       <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
@@ -1204,13 +827,41 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <list size="6">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.TransactionalISPNSecondLevelCacheTest" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.ISPNSecondLevelCacheTest" />
+    <configuration default="false" name="Maven Build" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="clean" />
+                <option value="package" />
+                <option value="test" />
+              </list>
+            </option>
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <list size="7">
+      <item index="0" class="java.lang.String" itemvalue="JUnit.ISPNSecondLevelCacheTest" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.TransactionalISPNSecondLevelCacheTest" />
       <item index="2" class="java.lang.String" itemvalue="Maven.AS7 Non-Clustered Tests" />
       <item index="3" class="java.lang.String" itemvalue="Maven.Tomcat7 Tests" />
       <item index="4" class="java.lang.String" itemvalue="Maven.Tomcat7 Clustered" />
       <item index="5" class="java.lang.String" itemvalue="Maven.AS7 Clustered Tests" />
+      <item index="6" class="java.lang.String" itemvalue="Maven.Maven Build" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -1239,37 +890,75 @@
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="b9f7c7b5-7332-4791-a96a-a51a74f388af" name="Default" comment="" />
+      <changelist id="7b419bb7-89d5-41b0-9247-c15f53daf930" name="Non commitable" comment="" />
       <created>1342515815357</created>
       <updated>1342515815357</updated>
     </task>
+    <task id="LOCAL-00001" summary="Raw Update test is added.">
+      <created>1342800502774</created>
+      <updated>1342800502774</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Update.">
+      <created>1343058103430</created>
+      <updated>1343058103430</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Update.">
+      <created>1343143778713</created>
+      <updated>1343143778713</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Update.">
+      <created>1343145519195</created>
+      <updated>1343145519195</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Update.">
+      <created>1343214026421</created>
+      <updated>1343214026421</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Update.">
+      <created>1343218230584</created>
+      <updated>1343218230584</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Update.">
+      <created>1343223176710</created>
+      <updated>1343223176710</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Update.">
+      <created>1343230368768</created>
+      <updated>1343230368768</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Update.">
+      <created>1343231110650</created>
+      <updated>1343231110650</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="26" width="1920" height="1024" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32949308" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39976957" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.7880184" sideWeight="0.5026738" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.51958525" sideWeight="0.51122993" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32949308" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973261" sideWeight="0.24193548" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24973261" sideWeight="0.2580645" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.7419355" sideWeight="0.49358287" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24973261" sideWeight="0.48041475" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.51958525" sideWeight="0.48502675" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32949308" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32949308" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32949308" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1311,7 +1000,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1324,6 +1013,8 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
+    <MESSAGE value="Raw Update test is added." />
+    <MESSAGE value="Update." />
   </component>
   <component name="VssConfiguration">
     <option name="CLIENT_PATH" value="" />
@@ -1371,121 +1062,80 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/hibernate2lc-as7-clustered/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="106" column="37" selection-start="3853" selection-end="3853" vertical-scroll-proportion="1.8883611">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/resources/arquillian.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="143" selection-start="1188" selection-end="1188" vertical-scroll-proportion="0.33847982">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hibernate2lc-as7-nonclustered/src/test/resources/queries/testDbCreate.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="567123" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/resources/queries/testDbCreate.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="35" selection-start="1210" selection-end="1210" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hibernate2lc-tomcat7/src/test/resources/hibernate.cfg.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="61" selection-start="1203" selection-end="1276" vertical-scroll-proportion="0.42021924">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.1.3.Final/hibernate-core-4.1.3.Final-sources.jar!/org/hibernate/internal/SessionImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1363" column="16" selection-start="45740" selection-end="45740" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.1.3.Final/hibernate-core-4.1.3.Final-sources.jar!/org/hibernate/Session.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="127" column="0" selection-start="5299" selection-end="5299" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-entitymanager/4.1.3.Final/hibernate-entitymanager-4.1.3.Final-sources.jar!/org/hibernate/ejb/AbstractEntityManagerImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1038" column="32" selection-start="34395" selection-end="34395" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/hibernate/javax/persistence/hibernate-jpa-2.0-api/1.0.1.Final/hibernate-jpa-2.0-api-1.0.1.Final-sources.jar!/javax/persistence/EntityManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="268" column="0" selection-start="11959" selection-end="11959" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/resources/META-INF/persistence.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="68" selection-start="395" selection-end="395" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/resources/infinispan-config.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="39" selection-start="1428" selection-end="1445" vertical-scroll-proportion="0.35945272">
-          <folding />
-        </state>
+        <state line="58" column="25" selection-start="814" selection-end="2736" vertical-scroll-proportion="0.8733414" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/java/org/infinispan/hibernate/clustered/test/data/DBEntry.java">
+    <entry file="file://$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/infinispan-config.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="75" selection-start="437" selection-end="437" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="11" column="19" selection-start="739" selection-end="739" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/java/org/infinispan/hibernate/clustered/test/AbstractISPNSecondLevelCacheTest.java">
+    <entry file="file://$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/jgroups-tcp.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="90" column="48" selection-start="5040" selection-end="5040" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
+        <state line="17" column="26" selection-start="876" selection-end="876" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/java/org/infinispan/hibernate/clustered/test/data/DBEntryCollection.java">
+    <entry file="file://$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/arquillian.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="75" selection-start="367" selection-end="367" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="22" column="91" selection-start="1348" selection-end="1348" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hibernate2lc-as7-nonclustered/src/test/java/org/infinispan/hibernate/test/secondLC/ISPNSecondLevelCacheTest.java">
+    <entry file="file://$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/hibernate.cfg.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="193" column="56" selection-start="6418" selection-end="8106" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="21" column="53" selection-start="1166" selection-end="1166" vertical-scroll-proportion="-12.6" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/java/org/infinispan/hibernate/test/secondLC/data/DBEntryCollection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="75" selection-start="366" selection-end="366" vertical-scroll-proportion="0.18270402" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/java/org/infinispan/hibernate/test/secondLC/data/DBEntry.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="72" column="79" selection-start="1857" selection-end="1857" vertical-scroll-proportion="1.1579572" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/java/org/infinispan/hibernate/test/secondLC/AbstractISPNSecondLevelCacheTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="78" column="35" selection-start="4151" selection-end="4151" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/java/org/infinispan/hibernate/clustered/test/ISPNSecondLevelCacheTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="204" column="8" selection-start="7931" selection-end="7931" vertical-scroll-proportion="0.30522564">
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3913#3932#0" expanded="true" />
-            <element signature="e#4939#4958#0" expanded="true" />
-          </folding>
+        <state line="254" column="80" selection-start="9215" selection-end="9487" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/transactional/hibernate.cfg.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="31" column="72" selection-start="1911" selection-end="1911" vertical-scroll-proportion="0.56915545" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/resources/transactional/infinispan-config.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="2427" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hibernate2lc-as7-nonclustered/src/test/java/org/infinispan/hibernate/test/secondLC/TransactionalISPNSecondLevelCacheTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="78" column="0" selection-start="2674" selection-end="2674" vertical-scroll-proportion="0.33243242" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hibernate2lc-as7-clustered/src/test/java/org/infinispan/hibernate/clustered/test/TransactionalISPNSecondLevelCacheTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/resources/transactional/infinispan-config.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="51" column="13" selection-start="2427" selection-end="2427" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hibernate2lc-tomcat7-clustered/src/test/java/org/infinispan/hibernate/test/secondLC/ISPNSecondLevelCacheTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="66" column="5" selection-start="2371" selection-end="2371" vertical-scroll-proportion="0.8016627">
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1566,11 +1216,11 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>Maven: antlr:antlr:2.7.7</last-edited>
+          <last-edited>Maven: junit:junit:4.8.1</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.42576206" />
               </list>
             </option>
           </splitter-proportions>
