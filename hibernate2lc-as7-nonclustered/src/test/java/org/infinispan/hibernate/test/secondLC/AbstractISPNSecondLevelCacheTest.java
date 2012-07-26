@@ -46,6 +46,7 @@ public abstract class AbstractISPNSecondLevelCacheTest {
 
     protected static final String QUERY_CACHE_NAME = "testable.war#hib2Lc.local-query";
     protected static final String ENTITY_CACHE_NAME = "testable.war#hib2Lc.local-entity";
+    protected static final String COLLECTION_CACHE_NAME = "testable.war#hib2Lc.local-collection";
 
     public static WebArchive createInfinispan2LCWebArchive(final String warName) {
         WebArchive war = ShrinkWrap.create(WebArchive.class, warName)

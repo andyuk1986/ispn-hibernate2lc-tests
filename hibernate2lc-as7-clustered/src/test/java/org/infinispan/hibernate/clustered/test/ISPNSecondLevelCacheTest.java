@@ -22,6 +22,7 @@ import java.util.*;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 
 /**
  * Tests for infinispan hibernate 2lc.
@@ -104,6 +105,12 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
     @OperateOnDeployment("node2")
     public void testSecondLevelCacheForQueriesNode2() throws Exception {
         EmbeddedCacheManager cacheManager= getCacheManager(manager.getEntityManagerFactory());
+
+        Set cacheNames = cacheManager.getCacheNames();
+        for (Iterator iterator = cacheNames.iterator(); iterator.hasNext(); ) {
+            Object next = iterator.next();
+            System.out.println(next);
+        }
 
         Map<CacheKey, CacheEntry> queryCache = cacheManager.getCache(QUERY_CACHE_NAME);
         assertCacheManagerStatistics(queryCache, 1, null);
@@ -268,6 +275,61 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
         manager.merge(entry);
 
         tx.commit();
+    }
+
+    @Test
+    @InSequence(9)
+    @OperateOnDeployment("node1")
+    public void testQuerySecondLevelCacheExpirationNode1() throws Exception {
+        EmbeddedCacheManager cacheManager = prepareCache(manager, QUERY_CACHE_NAME);
+        cacheManager.getCache(ENTITY_CACHE_NAME).clear();
+
+        tx.begin();
+
+        Query query = manager.createNamedQuery("listAllEntries").setMaxResults(queryCacheSize);
+        List<DBEntry> entries = query.getResultList();
+
+        manager.flush();
+        tx.commit();
+        manager.clear();
+
+        Map<CacheKey, CacheEntry> queryCacheMap = cacheManager.getCache(QUERY_CACHE_NAME);
+        Map<CacheKey, CacheEntry> entityCacheMap = cacheManager.getCache(ENTITY_CACHE_NAME);
+        Map<CacheKey, CacheEntry> collectionCacheMap = cacheManager.getCache(COLLECTION_CACHE_NAME);
+
+        assertTrue("The collection cache should not be empty", !collectionCacheMap.isEmpty());
+        assertCacheManagerStatistics(entityCacheMap, 2 * queryCacheSize, null);
+        assertCacheManagerStatistics(queryCacheMap, 1, null);
+
+        /*System.out.println("aaaaaaaaaaaaaaaaaaaa" + cacheManager.getCacheConfiguration(QUERY_CACHE_NAME).expiration().toString());
+        Thread.sleep(11000);
+
+        assertCacheManagerStatistics(entityCacheMap, 0, null);
+        assertCacheManagerStatistics(collectionCacheMap, 0, null);
+        assertCacheManagerStatistics(queryCacheMap, 0, null);*/
+    }
+
+    @Test
+    @InSequence(10)
+    @OperateOnDeployment("node2")
+    public void testQuerySecondLevelCacheExpirationNode2() throws Exception {
+        EmbeddedCacheManager cacheManager = prepareCache(manager, QUERY_CACHE_NAME);
+        cacheManager.getCache(ENTITY_CACHE_NAME).clear();
+
+        Map<CacheKey, CacheEntry> queryCacheMap = cacheManager.getCache(QUERY_CACHE_NAME);
+        Map<CacheKey, CacheEntry> entityCacheMap = cacheManager.getCache(ENTITY_CACHE_NAME);
+        Map<CacheKey, CacheEntry> collectionCacheMap = cacheManager.getCache(COLLECTION_CACHE_NAME);
+
+        assertTrue("The collection cache should not be empty", !collectionCacheMap.isEmpty());
+        assertCacheManagerStatistics(entityCacheMap, 2 * queryCacheSize, null);
+        assertCacheManagerStatistics(queryCacheMap, 1, null);
+
+        System.out.println("aaaaaaaaaaaaaaaaaaaa" + cacheManager.getCacheConfiguration(QUERY_CACHE_NAME).expiration().toString());
+        Thread.sleep(10000);
+
+        assertCacheManagerStatistics(entityCacheMap, 0, null);
+        assertCacheManagerStatistics(collectionCacheMap, 0, null);
+        assertCacheManagerStatistics(queryCacheMap, 0, null);
     }
 }
 

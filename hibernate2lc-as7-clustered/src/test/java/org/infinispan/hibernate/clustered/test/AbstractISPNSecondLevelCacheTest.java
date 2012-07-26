@@ -44,6 +44,7 @@ public abstract class AbstractISPNSecondLevelCacheTest {
 
     protected static final String QUERY_CACHE_NAME = "testable.war#hib2Lc.replicated-query";
     protected static final String ENTITY_CACHE_NAME = "testable.war#hib2Lc.replicated-entity";
+    protected static final String COLLECTION_CACHE_NAME = "testable.war#hib2Lc.replicated-collection";
 
     protected static final String TESTABLE_PACKAGE = "org.infinispan.hibernate.clustered.test";
 

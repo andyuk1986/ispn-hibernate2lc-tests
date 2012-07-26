@@ -179,19 +179,19 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
         tx.commit();
         manager.clear();
 
-        assertEquals("The book list should be 500", queryCacheSize, entries.size());
-
-        Map<CacheKey, CacheEntry> cachemap = cacheManager.getCache(QUERY_CACHE_NAME);
-        assertCacheManagerStatistics(cachemap, 1, null);
-
+        Map<CacheKey, CacheEntry> queryCacheMap = cacheManager.getCache(QUERY_CACHE_NAME);
         Map<CacheKey, CacheEntry> entityCacheMap = cacheManager.getCache(ENTITY_CACHE_NAME);
+        Map<CacheKey, CacheEntry> collectionCacheMap = cacheManager.getCache(COLLECTION_CACHE_NAME);
 
-        //Entries with collections should be stored in the cache.
+        assertTrue("The collection cache should not be empty", !collectionCacheMap.isEmpty());
         assertCacheManagerStatistics(entityCacheMap, 2 * queryCacheSize, null);
+        assertCacheManagerStatistics(queryCacheMap, 1, null);
 
-        //System.out.println("aaaaaaaaaaaaaaaaaaaa" + cacheManager.getCacheConfiguration(QUERY_CACHE_NAME).expiration().toString());
-        Thread.sleep(10000);
+        System.out.println("aaaaaaaaaaaaaaaaaaaa" + cacheManager.getCacheConfiguration(QUERY_CACHE_NAME).expiration().toString());
+        Thread.sleep(7000);
+
         assertCacheManagerStatistics(entityCacheMap, 0, null);
-        //assertCacheManagerStatistics(cachemap, 0, null);
+        assertCacheManagerStatistics(collectionCacheMap, 0, null);
+        assertCacheManagerStatistics(queryCacheMap, 0, null);
     }
 }
