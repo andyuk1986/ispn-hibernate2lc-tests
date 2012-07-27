@@ -22,9 +22,9 @@
 
             <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.JBossTransactionManagerLookup" />
 
-            <property name="hibernate.cache.infinispan.query.cfg" value="replicated-query" />
-            <property name="hibernate.cache.infinispan.entity.cfg" value="replicated-entity" />
-            <property name="hibernate.cache.infinispan.collection.cfg" value="replicated-collection" />
+            <property name="hibernate.cache.infinispan.query.cfg" value="queryCache" />
+            <property name="hibernate.cache.infinispan.entity.cfg" value="entityCache" />
+            <property name="hibernate.cache.infinispan.collection.cfg" value="collectionCache" />
             <property name="hibernate.cache.infinispan.timestamps.cfg" value="timestamps"/>
 
             <property name="hibernate.transaction.auto_close_session" value="true" />

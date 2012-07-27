@@ -15,7 +15,7 @@
     <default>
     </default>
 
-    <namedCache name="testable.war#hib2Lc.replicated-query">
+    <namedCache name="testable.war#hib2Lc.queryCache">
         <clustering mode="replication">
             <stateRetrieval fetchInMemoryState="true" timeout="1000"/>
             <sync replTimeout="20000"/>
@@ -27,7 +27,7 @@
         <lazyDeserialization enabled="true"/>
     </namedCache>
 
-    <namedCache name="replicated-entity">
+    <namedCache name="entityCache">
         <clustering mode="replication">
             <stateRetrieval fetchInMemoryState="true" timeout="1000"/>
             <sync replTimeout="20000"/>
@@ -39,7 +39,7 @@
         <lazyDeserialization enabled="true"/>
     </namedCache>
 
-    <namedCache name="replicated-collection">
+    <namedCache name="collectionCache">
         <clustering mode="replication">
             <stateRetrieval fetchInMemoryState="true" timeout="1000"/>
             <sync replTimeout="20000"/>

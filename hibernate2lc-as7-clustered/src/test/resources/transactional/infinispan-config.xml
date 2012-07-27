@@ -15,7 +15,7 @@
     <default>
     </default>
 
-    <namedCache name="replicated-entity">
+    <namedCache name="entityCache">
         <clustering mode="replication">
             <stateRetrieval fetchInMemoryState="true" timeout="1000"/>
             <sync replTimeout="20000"/>
@@ -29,7 +29,7 @@
                      lockingMode="OPTIMISTIC"/>
     </namedCache>
 
-    <namedCache name="replicated-collection">
+    <namedCache name="collectionCache">
         <clustering mode="replication">
             <stateRetrieval fetchInMemoryState="true" timeout="1000"/>
             <sync replTimeout="20000"/>

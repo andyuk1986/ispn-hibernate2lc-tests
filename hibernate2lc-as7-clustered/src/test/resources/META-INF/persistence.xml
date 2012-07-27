@@ -20,9 +20,9 @@
             <property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.infinispan.InfinispanRegionFactory" />
             <property name="hibernate.cache.infinispan.cfg" value="infinispan-config.xml" />
 
-            <property name="hibernate.cache.infinispan.query.cfg" value="replicated-query"/>
-            <property name="hibernate.cache.infinispan.entity.cfg" value="replicated-entity"/>
-            <property name="hibernate.cache.infinispan.collection.cfg" value="replicated-collection"/>
+            <property name="hibernate.cache.infinispan.query.cfg" value="queryCache"/>
+            <property name="hibernate.cache.infinispan.entity.cfg" value="entityCache"/>
+            <property name="hibernate.cache.infinispan.collection.cfg" value="collectionCache"/>
             <property name="hibernate.cache.infinispan.timestamps.cfg" value="timestamps"/>
 
             <property name="hibernate.transaction.auto_close_session" value="true" />

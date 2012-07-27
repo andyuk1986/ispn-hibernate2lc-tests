@@ -42,9 +42,9 @@ public abstract class AbstractISPNSecondLevelCacheTest {
     protected static final String TRANSACTIONAL_PERSISTENCE_URL = "transactional/META-INF/persistence.xml";
     protected static final String TRANSACTIONAL_INFINISPAN_CONFIG_NAME = "transactional/infinispan-config.xml";
 
-    protected static final String QUERY_CACHE_NAME = "testable.war#hib2Lc.replicated-query";
-    protected static final String ENTITY_CACHE_NAME = "testable.war#hib2Lc.replicated-entity";
-    protected static final String COLLECTION_CACHE_NAME = "testable.war#hib2Lc.replicated-collection";
+    protected static final String QUERY_CACHE_NAME = "testable.war#hib2Lc.queryCache";
+    protected static final String ENTITY_CACHE_NAME = "testable.war#hib2Lc.entityCache";
+    protected static final String COLLECTION_CACHE_NAME = "testable.war#hib2Lc.collectionCache";
 
     protected static final String TESTABLE_PACKAGE = "org.infinispan.hibernate.clustered.test";
 
