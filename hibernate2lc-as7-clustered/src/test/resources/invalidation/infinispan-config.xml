@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<infinispan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:infinispan:config:5.1" xsi:schemaLocation="urn:infinispan:config:5.1 http://www.infinispan.org/schemas/infinispan-config-5.1.xsd">
+    <global>
+        <globalJmxStatistics enabled="true" jmxDomain="infinispan" allowDuplicateDomains="true" />
+        <transport
+                transportClass="org.infinispan.remoting.transport.jgroups.JGroupsTransport"
+                clusterName="infinispan-hibernate-cluster"
+                distributedSyncTimeout="50000"
+                strictPeerToPeer="false">
+            <properties>
+                <property name="configurationFile" value="jgroups-tcp.xml"/>
+            </properties>
+        </transport>
+    </global>
+    <default>
+    </default>
+
+    <namedCache name="testable.war#hib2Lc.queryCache">
+        <clustering mode="invalidation">
+            <stateRetrieval fetchInMemoryState="false" timeout="20000"/>
+            <sync replTimeout="20000"/>
+        </clustering>
+        <locking isolationLevel="READ_COMMITTED" concurrencyLevel="1000"
+                 lockAcquisitionTimeout="15000" useLockStriping="false"/>
+        <eviction maxEntries="10000" strategy="LRU"/>
+        <expiration lifespan="10000" maxIdle="10000" wakeUpInterval="5000"/>
+        <lazyDeserialization enabled="true"/>
+    </namedCache>
+
+    <namedCache name="entityCache">
+        <clustering mode="invalidation">
+            <stateRetrieval fetchInMemoryState="false" timeout="20000"/>
+            <sync replTimeout="20000"/>
+        </clustering>
+        <locking isolationLevel="READ_COMMITTED" concurrencyLevel="1000"
+                 lockAcquisitionTimeout="15000" useLockStriping="false"/>
+        <eviction maxEntries="10000" strategy="LRU"/>
+        <expiration maxIdle="100000" wakeUpInterval="5000"/>
+        <lazyDeserialization enabled="true"/>
+    </namedCache>
+
+    <namedCache name="collectionCache">
+        <clustering mode="invalidation">
+            <stateRetrieval fetchInMemoryState="false" timeout="20000"/>
+            <sync replTimeout="20000"/>
+        </clustering>
+        <locking isolationLevel="READ_COMMITTED" concurrencyLevel="1000"
+                 lockAcquisitionTimeout="15000" useLockStriping="false"/>
+        <eviction maxEntries="10000" strategy="LRU"/>
+        <expiration maxIdle="5000" wakeUpInterval="2000" lifespan="5000"/>
+        <lazyDeserialization enabled="true"/>
+    </namedCache>
+
+    <namedCache name="timestamps">
+        <locking isolationLevel="READ_COMMITTED" concurrencyLevel="1000"
+                 lockAcquisitionTimeout="15000" useLockStriping="false"/>
+        <eviction strategy="NONE"/>
+        <expiration wakeUpInterval="0"/>
+    </namedCache>
+</infinispan>

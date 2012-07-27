@@ -12,7 +12,7 @@
         <module>hibernate2lc-as7-clustered</module>
         <module>hibernate2lc-as7-nonclustered</module>
         <module>hibernate2lc-tomcat7</module>
-        <!--<module>hibernate2lc-tomcat7-clustered</module>-->
+        <module>hibernate2lc-tomcat7-clustered</module>
     </modules>
 
     <repositories>

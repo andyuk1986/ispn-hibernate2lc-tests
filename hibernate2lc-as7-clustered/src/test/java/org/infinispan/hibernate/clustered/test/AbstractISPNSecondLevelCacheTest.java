@@ -38,9 +38,11 @@ public abstract class AbstractISPNSecondLevelCacheTest {
     protected static final String JGROUPS_CONFIG_NAME = "jgroups-tcp.xml";
     protected static final String MANIFEST_FILE_NAME = "MANIFEST.MF";
 
-    protected static final String TRANSACTIONAL_WAR_NAME = "transactionalTestable.war";
     protected static final String TRANSACTIONAL_PERSISTENCE_URL = "transactional/META-INF/persistence.xml";
     protected static final String TRANSACTIONAL_INFINISPAN_CONFIG_NAME = "transactional/infinispan-config.xml";
+
+    protected static final String INVALIDATION_CONFIG_PERSISTENCE_URL = "invalidation/persistence.xml";
+    protected static final String INVALIDATION_CONFIG_INFINISPAN_CONFIG_NAME = "invalidation/infinispan-config.xml";
 
     protected static final String QUERY_CACHE_NAME = "testable.war#hib2Lc.queryCache";
     protected static final String ENTITY_CACHE_NAME = "testable.war#hib2Lc.entityCache";
