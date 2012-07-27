@@ -6,11 +6,11 @@
     <default>
     </default>
 
-    <namedCache name="local-query">
+    <namedCache name="testable.war#hib2Lc.local-query">
         <locking isolationLevel="READ_COMMITTED" concurrencyLevel="1000"
                  lockAcquisitionTimeout="15000" useLockStriping="false"/>
-        <!--<eviction maxEntries="10000" strategy="LRU"/>
-        <expiration lifespan="5000" maxIdle="5000" wakeUpInterval="2000" />-->
+        <eviction maxEntries="10000" strategy="LRU"/>
+        <expiration lifespan="5000" maxIdle="5000" wakeUpInterval="2000" />
     </namedCache>
 
     <namedCache name="local-entity">

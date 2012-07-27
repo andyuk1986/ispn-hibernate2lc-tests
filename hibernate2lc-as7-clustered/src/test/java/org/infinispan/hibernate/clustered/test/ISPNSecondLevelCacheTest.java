@@ -300,21 +300,13 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
         assertTrue("The collection cache should not be empty", !collectionCacheMap.isEmpty());
         assertCacheManagerStatistics(entityCacheMap, 2 * queryCacheSize, null);
         assertCacheManagerStatistics(queryCacheMap, 1, null);
-
-        /*System.out.println("aaaaaaaaaaaaaaaaaaaa" + cacheManager.getCacheConfiguration(QUERY_CACHE_NAME).expiration().toString());
-        Thread.sleep(11000);
-
-        assertCacheManagerStatistics(entityCacheMap, 0, null);
-        assertCacheManagerStatistics(collectionCacheMap, 0, null);
-        assertCacheManagerStatistics(queryCacheMap, 0, null);*/
     }
 
     @Test
     @InSequence(10)
     @OperateOnDeployment("node2")
     public void testQuerySecondLevelCacheExpirationNode2() throws Exception {
-        EmbeddedCacheManager cacheManager = prepareCache(manager, QUERY_CACHE_NAME);
-        cacheManager.getCache(ENTITY_CACHE_NAME).clear();
+        EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
 
         Map<CacheKey, CacheEntry> queryCacheMap = cacheManager.getCache(QUERY_CACHE_NAME);
         Map<CacheKey, CacheEntry> entityCacheMap = cacheManager.getCache(ENTITY_CACHE_NAME);
@@ -325,7 +317,22 @@ public class ISPNSecondLevelCacheTest extends AbstractISPNSecondLevelCacheTest {
         assertCacheManagerStatistics(queryCacheMap, 1, null);
 
         System.out.println("aaaaaaaaaaaaaaaaaaaa" + cacheManager.getCacheConfiguration(QUERY_CACHE_NAME).expiration().toString());
-        Thread.sleep(10000);
+        Thread.sleep(12000);
+
+        assertCacheManagerStatistics(entityCacheMap, 0, null);
+        assertCacheManagerStatistics(collectionCacheMap, 0, null);
+        assertCacheManagerStatistics(queryCacheMap, 0, null);
+    }
+
+    @Test
+    @InSequence(11)
+    @OperateOnDeployment("node1")
+    public void testQuerySecondLevelCacheExpirationCheckNode1() throws Exception {
+        EmbeddedCacheManager cacheManager = getCacheManager(manager.getEntityManagerFactory());
+
+        Map<CacheKey, CacheEntry> queryCacheMap = cacheManager.getCache(QUERY_CACHE_NAME);
+        Map<CacheKey, CacheEntry> entityCacheMap = cacheManager.getCache(ENTITY_CACHE_NAME);
+        Map<CacheKey, CacheEntry> collectionCacheMap = cacheManager.getCache(COLLECTION_CACHE_NAME);
 
         assertCacheManagerStatistics(entityCacheMap, 0, null);
         assertCacheManagerStatistics(collectionCacheMap, 0, null);
